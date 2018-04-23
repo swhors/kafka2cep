@@ -100,26 +100,24 @@ public class ConsumerThreadPool
         String sClsName  = "";
         int    sTopicNum = mTopic.size();
 
-        aliceKafkaTopicInfo sInfo;
+        aliceKafkaTopicInfo sTopicInfo;
+
         mExecutor =  new ExecutorService[sTopicNum];
-        for( Map.Entry<String,aliceKafkaTopicInfo> sEntry:mTopic.entrySet() )
-        {
-            sTopic = sEntry.getKey();
-            sInfo  = sEntry.getValue();
-            System.out.println( "Topic=" + sTopic +
-                                ",Calss Name=" + sInfo.getClassName());
-            sTopicCountMap.put( sTopic, mOpThreadNum );
-        }
 
         Map<String, List<KafkaStream<byte[], byte[]>>> sConsumerMap =
                 mConsumer.createMessageStreams( sTopicCountMap );
-        for( Map.Entry<String,String> sEntry:mTopic.entrySet() )
+        for( Map.Entry<String,aliceKafkaTopicInfo> sEntry:mTopic.entrySet() )
         {
             List<KafkaStream<byte[], byte[]>> sTopicListeners =
                                sConsumerMap.get( sTopic );
             
-            sTopic   = sEntry.getKey();
-            sClsName = sEntry.getValue();
+            sTopic     = sEntry.getKey();
+            sTopicInfo = sEntry.getValue();
+
+            System.out.println( "Topic=" + sTopic +
+                                ",Calss Name=" + sTopicInfo.getClassName());
+
+            sTopicCountMap.put( sTopic, mOpThreadNum );
 
             mExecutor[sCnt] = Executors.newFixedThreadPool( mOpThreadNum );
 
@@ -128,14 +126,15 @@ public class ConsumerThreadPool
                 System.out.println( "Will be start " +
                                     sThreadNum +
                                     "'s thread." );
-                mExecutor[sCnt].submit( new aliceConsumer( stream,
-                                                         mEpService,
-                                                         sThreadNum++,
-                                                         mEventClsName,
-                                                         mDataType,
-                                                         mNewDataSeperator,
-                                                         sTopic,
-                                                         sClsName )  );
+                mExecutor[sCnt].submit( new aliceConsumer(
+                                               stream,
+                                               mEpService,
+                                               sThreadNum++,
+                                               mEventClsName,
+                                               mDataType,
+                                               mNewDataSeperator,
+                                               sTopic,
+                                               sTopicInfo.getClassName() ) );
             }
         }
     }

@@ -101,18 +101,18 @@ public class aliceConfig
         return mProper.getProperty( mTags[mTag4KafkaGroupID] );
     }
 
-    //static public HashMap< String, aliceKafkaTopicInfo > getKafkaTopic()
-    static public HashMap< String, Object> getKafkaTopic()
+    static public HashMap< String, aliceKafkaTopicInfo > getKafkaTopic()
+    //static public HashMap< String, Object> getKafkaTopic()
     {
         String []sTopics;
         String []sFields;
         String sTopicLine =
             mProper.getProperty(mTags[mTag4KafkaTopic]);
 
-        //HashMap<String, aliceKafkaTopicInfo > sHashMap
-        //    = new HashMap<String, aliceKafkaTopicInfo>();
-        HashMap<String, Object > sHashMap
-            = new HashMap<String, Object>();
+        HashMap<String, aliceKafkaTopicInfo > sHashMap
+            = new HashMap<String, aliceKafkaTopicInfo>();
+        //HashMap<String, Object > sHashMap
+        //    = new HashMap<String, Object>();
 
         if( sTopicLine.length() > 0 )
         {
