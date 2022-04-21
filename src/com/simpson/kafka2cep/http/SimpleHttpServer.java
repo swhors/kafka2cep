@@ -19,10 +19,11 @@ import com.sun.net.httpserver.HttpServer;
 
 import com.simpson.kafka2cep.cep.EPLRunner;
 import com.simpson.kafka2cep.cep.to.*;
+import com.simpson.kafka2cep.model.aliceEqlObject;
 
 import org.apache.log4j.Logger;
 
-public class HttpServer
+public class SimpleHttpServer
 {
     final private String mTag4Command   = "command";
     final private String mTag4ID        = "id";
@@ -48,7 +49,7 @@ public class HttpServer
  
     public Logger mLog = Logger.getLogger( this.getClass() );
  
-    public HttpServer()
+    public SimpleHttpServer()
     {
     }
 
@@ -95,7 +96,7 @@ public class HttpServer
         public void handle(HttpExchange aHttpExchange) throws IOException
         {
             String response = "Use /get?hello=word&foo=bar to see how to handle url parameters";
-            HttpServer.writeResponse(aHttpExchange, response.toString());
+            SimpleHttpServer.writeResponse(aHttpExchange, response.toString());
             System.out.println("InfoHandler : " + response );
         }
     }
@@ -111,7 +112,7 @@ public class HttpServer
             StringBuilder sResponse = new StringBuilder();
  
             Map <String,String> sParams
-                = HttpServer.queryToMap(aHttpExchange.getRequestURI().getQuery());
+                = SimpleHttpServer.queryToMap(aHttpExchange.getRequestURI().getQuery());
  
             String sCommand   = sParams.get( mTag4Command );
             String sID        = sParams.get( mTag4ID      );
@@ -219,7 +220,7 @@ public class HttpServer
             sResponse.append("<h3>error</h3><br/>\n");
             sResponse.append("<h4>msg:"+ aMessage +"</h4><br/>\n");
             sResponse.append("</body></html>");
-            HttpServer.writeResponse( aHttpExchange, sResponse.toString());
+            SimpleHttpServer.writeResponse( aHttpExchange, sResponse.toString());
         }
         catch( IOException e )
         {
@@ -235,7 +236,7 @@ public class HttpServer
             sResponse.append("<html><body>\n");
             sResponse.append("<h3>add db information</h3><br/>\n");
             sResponse.append("</body></html>");
-            HttpServer.writeResponse( aHttpExchange, sResponse.toString());
+            SimpleHttpServer.writeResponse( aHttpExchange, sResponse.toString());
         }
         catch( IOException e )
         {
@@ -261,7 +262,7 @@ public class HttpServer
                                   "</h4><br/>\n" );
             }
             sResponse.append("</body></html>");
-            HttpServer.writeResponse( aHttpExchange,
+            SimpleHttpServer.writeResponse( aHttpExchange,
                                          sResponse.toString() );
         }
         catch( IOException e )

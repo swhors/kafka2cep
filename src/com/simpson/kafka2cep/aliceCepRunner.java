@@ -15,7 +15,7 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 
 import com.simpson.kafka2cep.cep.EPLRunner;
-import com.simpson.kafka2cep.http.HttpServer;
+import com.simpson.kafka2cep.http.SimpleHttpServer;
 import com.simpson.kafka2cep.kafka.ConsumerThreadPool;
  
 public class aliceCepRunner implements KafkaProperties
@@ -228,7 +228,7 @@ public class aliceCepRunner implements KafkaProperties
                                 "Start WWW Service.\n");
             try
             {
-                HttpServer sHttpServer = new HttpServer();
+                SimpleHttpServer sHttpServer = new SimpleHttpServer();
                 sHttpServer.run( Integer.parseInt(
                                           aliceConfig.getWWWPort() ) );
             }
