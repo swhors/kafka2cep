@@ -1,28 +1,21 @@
 /************************************************
  * aliceConsumer.java
  ************************************************/
-package com.kafka2esper.kafka;
+package com.simpson.kafka2cep.kafka;
 
 import java.util.*;
 import java.util.regex.*;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Properties;
-
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 
-import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
 
-import com.kafka2esper.util.*;
+import com.simpson.kafka2cep.util.*;
+import com.simpson.kafka2cep.cep.EPLRunner;
+import com.simpson.kafka2cep.cep.event.*;
 
 public class aliceConsumer implements Runnable
 {
-    final private int mDefCdrFieldItemNum = 25;
     final private int mDataType4Unknown   = 0;
     final private int mDataType4CSV       = 1;
     final private int mDataType4JSON      = 2;
@@ -87,7 +80,7 @@ public class aliceConsumer implements Runnable
         boolean sSkipFirst = false;
         ConsumerIterator<byte[], byte[]> it = mStream.iterator();
 
-        sActClass = aliceEPLRunner.getEventClass( mTopicName );
+        sActClass = EPLRunner.getEventClass( mTopicName );
         
         if( sActClass != null )
         {

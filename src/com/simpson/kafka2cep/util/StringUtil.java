@@ -1,8 +1,8 @@
-package com.simpson.kafka2cep.cep;
+package com.simpson.kafka2cep.util;
 
 import java.util.regex.*;
 
-public class aliceCepUtil
+public class StringUtil
 {
     /******************************************************
      * getMatchedCount     

@@ -1,4 +1,4 @@
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep.to;
 
 public class aliceCepToFile extends aliceCepTo
 {

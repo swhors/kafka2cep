@@ -1,10 +1,11 @@
 /***********************************************
  * aliceCdrEvent.java :
  ***********************************************/
-package com.kafka2esper.model;
+package com.simpson.kafka2cep.cep.event;
 
 
-public class aliceCdrEvent extends aliceEvent
+
+public class CdrEvent extends aliceEvent
 {
     final int mCdrItemNum = 25;
 
@@ -34,7 +35,7 @@ public class aliceCdrEvent extends aliceEvent
     private String Info;
     private String VMName;
 
-    public aliceCdrEvent()
+    public CdrEvent()
     {
 
     }

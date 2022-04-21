@@ -1,9 +1,7 @@
-package com.kafka2esper.util;
+package com.simpson.kafka2cep.util;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.BufferedReader; 
-import java.util.*;
 import java.util.regex.*; 
 
 public class JsonUtil

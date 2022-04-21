@@ -1,9 +1,11 @@
 /************************************************
  * aliceCepToDB.java
  ************************************************/
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep.to;
 
 import java.sql.*;
+import com.simpson.kafka2cep.model.*;
+import com.simpson.kafka2cep.service.*;
 
 public class aliceCepToDB extends aliceCepTo
 {

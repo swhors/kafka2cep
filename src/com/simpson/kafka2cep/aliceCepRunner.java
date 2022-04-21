@@ -4,8 +4,8 @@
 package com.simpson.kafka2cep;
  
 import java.io.IOException;
- 
-import java.util.Collection;
+
+import com.simpson.kafka2cep.config.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -13,7 +13,10 @@ import java.util.Map.Entry;
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
+
+import com.simpson.kafka2cep.cep.EPLRunner;
+import com.simpson.kafka2cep.http.HttpServer;
+import com.simpson.kafka2cep.kafka.ConsumerThreadPool;
  
 public class aliceCepRunner implements KafkaProperties
 {
@@ -185,7 +188,7 @@ public class aliceCepRunner implements KafkaProperties
         /**********************************
          * Regist EPL Lists from File.    *
          **********************************/
-        if( aliceEPLRunner.initEPLService( aliceConfig.getEqlList(),
+        if( EPLRunner.initEPLService( aliceConfig.getEqlList(),
                                          sEpService,
                                          aliceConfig.getEqlPrintDate(),
                                          aliceConfig.getEqlLocale(),
@@ -225,7 +228,7 @@ public class aliceCepRunner implements KafkaProperties
                                 "Start WWW Service.\n");
             try
             {
-                aliceHttpServer sHttpServer = new aliceHttpServer();
+                HttpServer sHttpServer = new HttpServer();
                 sHttpServer.run( Integer.parseInt(
                                           aliceConfig.getWWWPort() ) );
             }

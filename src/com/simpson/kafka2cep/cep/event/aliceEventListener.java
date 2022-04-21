@@ -2,9 +2,11 @@
  * aliceEventListener.java
  ***********************************************/
 
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep.event;
 
 import java.util.*;
+
+import com.simpson.kafka2cep.cep.to.aliceCepTo;
 import java.text.*;
 
 import com.espertech.esper.client.EventBean;
@@ -53,7 +55,6 @@ public class aliceEventListener implements UpdateListener
 
         String[]         sValues    = null;
         int              sCnt         = 0;
-        int              sItemSize = mKeys.length;
         Date             sCurTime = null;
         SimpleDateFormat sTimeFormat = null;
 

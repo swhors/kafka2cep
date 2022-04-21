@@ -1,4 +1,4 @@
-package com.kafka2esper.plugin;
+package com.simpson.kafka2cep.plugin;
 
 public interface aliceCepDBUserDef
 {

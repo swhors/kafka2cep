@@ -1,17 +1,18 @@
 /************************************************
  * aliceConfig.java
  ************************************************/
-package com.kafka2esper.config;
+package com.simpson.kafka2cep.config;
 
 import java.io.IOException;
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.FileOutputStream;
 import java.util.Properties;
+
+import com.simpson.kafka2cep.model.*;
 
 public class aliceConfig
 {

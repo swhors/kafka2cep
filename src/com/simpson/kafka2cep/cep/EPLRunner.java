@@ -1,21 +1,25 @@
 /**************************************************
  * aliceEPLRunner.java
+ * 
+ * author : swhors@naver.com
  **************************************************/
 
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep;
 
 import java.util.*;
 
-import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
-import org.apache.log4j.Logger;
+import com.simpson.kafka2cep.model.aliceEqlObject;
+import com.simpson.kafka2cep.cep.to.aliceCepTo;
+import com.simpson.kafka2cep.cep.event.aliceEventListener;
+import com.simpson.kafka2cep.cep.event.aliceEvent;
+import com.simpson.kafka2cep.util.XmlReader;
+import com.simpson.kafka2cep.model.aliceKafkaTopicInfo;
  
-public class aliceEPLRunner
+public class EPLRunner
 {
-    static final private String mTag4LocaleKorea  = "Locale.KOREA";
     static final private String mTag4LocaleUS     = "Locale.US";
     static final private String mTag4LocaleJAPAN  = "Locale.JAPAN";
     static final private String mTag4LocaleCHINA  = "Locale.CHINA";
@@ -29,7 +33,7 @@ public class aliceEPLRunner
     static private Locale  mLocale    = Locale.KOREA;
     static private boolean mPrintDate = false;
  
-    static private HashMap< String, aliceEPLRunner >
+    static private HashMap< String, EPLRunner >
                                            mEPLRunners = null;
  
     public String   mTopic;
@@ -38,7 +42,7 @@ public class aliceEPLRunner
     public Class<?> mActClass   = null;
     public int      mEventItemNumber = 0;
  
-    public aliceEPLRunner( String aTopic,
+    public EPLRunner( String aTopic,
                          String aClassName,
                          String aDataType )
     {
@@ -70,7 +74,7 @@ public class aliceEPLRunner
                 sStatement.stop();
                 sStatement.destroy();
                 mMap4Eql.remove( aID );
-                aliceXmlReader.write( mEqlListFileName, mMap4Eql );
+                XmlReader.write( mEqlListFileName, mMap4Eql );
                 sRet = true;
             }
         }
@@ -82,9 +86,9 @@ public class aliceEPLRunner
     {
         int sItemCntNum = 0;
  
-        for( Map.Entry<String, aliceEPLRunner> sEntry : mEPLRunners.entrySet() )
+        for( Map.Entry<String, EPLRunner> sEntry : mEPLRunners.entrySet() )
         {
-            aliceEPLRunner sRunner = sEntry.getValue();
+            EPLRunner sRunner = sEntry.getValue();
             if( aFrom.startsWith( sRunner.mClassName ) == true )
             {
                 sItemCntNum = sRunner.mEventItemNumber;
@@ -99,9 +103,9 @@ public class aliceEPLRunner
     {
         int sItemCntNum = 0;
  
-        for( Map.Entry<String, aliceEPLRunner> sEntry : mEPLRunners.entrySet() )
+        for( Map.Entry<String, EPLRunner> sEntry : mEPLRunners.entrySet() )
         {
-            aliceEPLRunner sRunner = sEntry.getValue();
+            EPLRunner sRunner = sEntry.getValue();
             if( sRunner.mClassName == aClsName )
             {
                 sItemCntNum = sRunner.mEventItemNumber;
@@ -159,7 +163,6 @@ public class aliceEPLRunner
             try
             {
                 int sEventItemNumber = 0;
-                String sClsName = "";
                 sCcpCepTo = aliceCepTo.getInstance( aTo );
                 if( sCcpCepTo == null )
                 {
@@ -188,7 +191,7 @@ public class aliceEPLRunner
                                                 aTo,
                                                 sStatement ) ;
                     mMap4Eql.put( aID, sObject );
-                    aliceXmlReader.write( mEqlListFileName, mMap4Eql );
+                    XmlReader.write( mEqlListFileName, mMap4Eql );
                 }
                 else
                 {
@@ -224,10 +227,10 @@ public class aliceEPLRunner
         return sRet;
     }
  
-    public static Class getEventClass( String aTopic )
+    public static Class<?> getEventClass( String aTopic )
     {
-        aliceEPLRunner sRunner;
-        for( Map.Entry<String, aliceEPLRunner> sEntry : mEPLRunners.entrySet() )
+        EPLRunner sRunner;
+        for( Map.Entry<String, EPLRunner> sEntry : mEPLRunners.entrySet() )
         {
             sRunner = sEntry.getValue();
             if( sRunner.mTopic == aTopic )
@@ -252,7 +255,7 @@ public class aliceEPLRunner
  
         mPrintDate = aPrintDate;
  
-        mEPLRunners = new HashMap< String, aliceEPLRunner >();
+        mEPLRunners = new HashMap< String, EPLRunner >();
  
         try
         {
@@ -261,7 +264,7 @@ public class aliceEPLRunner
             {
                 String sTopic                = sEntry.getKey();
                 aliceKafkaTopicInfo sTopicInfo = sEntry.getValue();
-                aliceEPLRunner sRunInfo = new aliceEPLRunner(
+                EPLRunner sRunInfo = new EPLRunner(
                                                 sTopic,
                                                 sTopicInfo.mClassName,
                                                 sTopicInfo.mDataType );
@@ -287,7 +290,7 @@ public class aliceEPLRunner
                 }
             }
  
-            mMap4Eql = aliceXmlReader.read(  aEqlListFile );
+            mMap4Eql = XmlReader.read(  aEqlListFile );
  
             if( sDebug == true )
             {

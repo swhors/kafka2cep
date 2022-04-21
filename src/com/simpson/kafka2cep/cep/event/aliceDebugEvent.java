@@ -1,7 +1,7 @@
 /***********************************************
  * aliceDebugEvent.java :
  ***********************************************/
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep.event;
 
 
 public class aliceDebugEvent extends aliceEvent

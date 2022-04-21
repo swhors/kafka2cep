@@ -1,7 +1,7 @@
 /********************************************
  * ccpCepDBInfo.java
  ********************************************/
-package com.kafka2esper.config;
+package com.simpson.kafka2cep.config;
 
 public class aliceCepDBInfo
 {

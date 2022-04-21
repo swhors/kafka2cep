@@ -1,7 +1,7 @@
 /************************************************
  * aliceKafkaInfo.java
  ************************************************/
-package com.kafka2esper.model;
+package com.simpson.kafka2cep.model;
 
 import java.util.*;
 import java.util.regex.*;

@@ -1,16 +1,11 @@
 /***********************************************
  * aliceXmlReader.java
  ***********************************************/
-package com.kafka2esper.util; 
+package com.simpson.kafka2cep.util; 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.StringReader;
-import java.util.*;
-import java.util.Properties;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,9 +23,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.OutputKeys;
  
-import org.xml.sax.InputSource;
+import com.simpson.kafka2cep.model.aliceEqlObject;
 
-public class aliceXmlReader
+public class XmlReader
 {
     String mFilePath;
  
@@ -45,15 +40,13 @@ public class aliceXmlReader
  
     //HashMap< String , aliceEqlObject > mMap4Eql;
  
-    public aliceXmlReader( String aFilePath )
+    public XmlReader( String aFilePath )
     {
         mFilePath = aFilePath;
     }
  
     static public boolean write( String aOutFileName, HashMap<String, aliceEqlObject > aMap4Eql )
     {
-        int sCnt  = 0;
-        int sSize = 0;
         try
         {
             File sFile = new File ( aOutFileName );
@@ -129,14 +122,6 @@ public class aliceXmlReader
 
             StreamResult sResult = new StreamResult( new File( aOutFileName ) );
 
-            if( sResult == null )
-            {
-                System.out.println("SreamResult == null\n");
-            }
-            if( sSource == null )
-            {
-                System.out.println("DOMSource == null\n");
-            }
             sTransformer.transform( sSource, sResult );
         }
         catch( ParserConfigurationException pce )
@@ -162,11 +147,6 @@ public class aliceXmlReader
             System.out.println( "enter..\n");
             File sFile = new File( aInFileName );
  
-            if( sFile == null )
-            {
-                System.out.println( "null pointer..\n");
-            }
-
             DocumentBuilderFactory sDocBuildFact
                 = DocumentBuilderFactory.newInstance();
 
@@ -343,8 +323,6 @@ public class aliceXmlReader
     public static void main(String aArgv[])
     {
         HashMap<String, aliceEqlObject > sMap4Eql = null;
-        String sEql = null;
- 
         String sInFileName = "backup/test.xml";
         String sOutFileName = "test1.xml";
  
@@ -358,7 +336,7 @@ public class aliceXmlReader
             sOutFileName = aArgv[1];
         }
  
-        sMap4Eql = aliceXmlReader.read(  sInFileName  );
-        aliceXmlReader.write( sOutFileName, sMap4Eql );
+        sMap4Eql = XmlReader.read(  sInFileName  );
+        XmlReader.write( sOutFileName, sMap4Eql );
     }
 }

@@ -3,8 +3,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.simpson.kafka2esper</groupId>
-	<artifactId>kafka2esper</artifactId>
+	<groupId>com.simpson.kafka2cep</groupId>
+	<artifactId>kafka2cep</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
 	<name>cepRunner</name>
@@ -52,7 +52,7 @@
 					<configuration>
 						<archive>
 							<manifest>
-								<mainClass>com.kafka2esper.aliceCepRunner</mainClass>
+								<mainClass>com.simpson.kafka2cep.aliceCepRunner</mainClass>
 							</manifest>
 						</archive>
 						<descriptorRefs>

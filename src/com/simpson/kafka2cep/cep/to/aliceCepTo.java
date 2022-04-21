@@ -1,9 +1,9 @@
 /************************************************
  * aliceCepToDB.java
  ************************************************/
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep.to;
 
-abstract class aliceCepTo
+public abstract class aliceCepTo
 {
     final static public String mTag4File    = "file:";
     static final public String mTag4Unknown = "??:";

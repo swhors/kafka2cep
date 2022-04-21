@@ -1,4 +1,4 @@
-package com.kafka2esper.config;
+package com.simpson.kafka2cep.config;
 
 public interface KafkaProperties
 {

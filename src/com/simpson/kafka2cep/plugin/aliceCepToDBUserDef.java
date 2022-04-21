@@ -1,10 +1,10 @@
 /***********************************************
  * aliceCepToDBUserDef.java
  ***********************************************/
-package com.kafka2esper.plugin;
+package com.simpson.kafka2cep.plugin;
 
-import com.kafka2esper.cep.aliceCepDBUserDef;
-import com.kafka2esper.cep.aliceCepToDB2Mysql;
+import com.simpson.kafka2cep.service.aliceCepDBUserDef;
+import com.simpson.kafka2cep.cep.to.aliceCepToDB2Mysql;
 
 public class aliceCepToDBUserDef implements aliceCepDBUserDef
 {

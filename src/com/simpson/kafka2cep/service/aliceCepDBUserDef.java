@@ -1,7 +1,7 @@
 /***************************************************
  * aliceCepDBUserDef.java
  ***************************************************/
-package com.kafka2esper.service;
+package com.simpson.kafka2cep.service;
 
 public interface aliceCepDBUserDef
 {

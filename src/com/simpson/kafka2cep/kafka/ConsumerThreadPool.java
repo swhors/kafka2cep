@@ -1,30 +1,24 @@
 /***********************************************
  * ConsumerThreadPool.java
  ***********************************************/
-package com.kafka2esper.kafka;
+package com.simpson.kafka2cep.kafka;
 
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
-import java.io.Reader;
-import java.io.StringReader;
 
-import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.consumer.ConsumerConfig;
 import kafka.javaapi.consumer.ConsumerConnector;
 
-import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
+
+import com.simpson.kafka2cep.model.*;
+import com.simpson.kafka2cep.config.*;
 
 public class ConsumerThreadPool
 {
@@ -97,7 +91,6 @@ public class ConsumerThreadPool
         int sThreadNum   = 0;
         int sCnt         = 0;
         String sTopic    = "";
-        String sClsName  = "";
         int    sTopicNum = mTopic.size();
 
         aliceKafkaTopicInfo sTopicInfo;

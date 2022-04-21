@@ -3,8 +3,9 @@
  * aliceTraceEvent.java :
  *****************************************/
 
-package com.kafka2esper.model;
+package com.simpson.kafka2cep.model;
 
+import com.simpson.kafka2cep.cep.event.*;
 
 public class aliceTraceEvent extends aliceEvent
 {

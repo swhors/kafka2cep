@@ -1,7 +1,7 @@
 /************************************************
  * aliceKafkaTopicInfo.java
  ************************************************/
-package com.kafka2esper.model;
+package com.simpson.kafka2cep.model;
 
 public class aliceKafkaTopicInfo
 {

@@ -1,4 +1,4 @@
-package com.kafka2esper.http;
+package com.simpson.kafka2cep.http;
 /***************************************************
  * HttpServer.java
  ***************************************************/
@@ -17,9 +17,12 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import com.simpson.kafka2cep.cep.EPLRunner;
+import com.simpson.kafka2cep.cep.to.*;
+
 import org.apache.log4j.Logger;
 
-public class aliceHttpServer
+public class HttpServer
 {
     final private String mTag4Command   = "command";
     final private String mTag4ID        = "id";
@@ -45,7 +48,7 @@ public class aliceHttpServer
  
     public Logger mLog = Logger.getLogger( this.getClass() );
  
-    public aliceHttpServer()
+    public HttpServer()
     {
     }
 
@@ -92,7 +95,7 @@ public class aliceHttpServer
         public void handle(HttpExchange aHttpExchange) throws IOException
         {
             String response = "Use /get?hello=word&foo=bar to see how to handle url parameters";
-            aliceHttpServer.writeResponse(aHttpExchange, response.toString());
+            HttpServer.writeResponse(aHttpExchange, response.toString());
             System.out.println("InfoHandler : " + response );
         }
     }
@@ -108,7 +111,7 @@ public class aliceHttpServer
             StringBuilder sResponse = new StringBuilder();
  
             Map <String,String> sParams
-                = aliceHttpServer.queryToMap(aHttpExchange.getRequestURI().getQuery());
+                = HttpServer.queryToMap(aHttpExchange.getRequestURI().getQuery());
  
             String sCommand   = sParams.get( mTag4Command );
             String sID        = sParams.get( mTag4ID      );
@@ -216,7 +219,7 @@ public class aliceHttpServer
             sResponse.append("<h3>error</h3><br/>\n");
             sResponse.append("<h4>msg:"+ aMessage +"</h4><br/>\n");
             sResponse.append("</body></html>");
-            aliceHttpServer.writeResponse( aHttpExchange, sResponse.toString());
+            HttpServer.writeResponse( aHttpExchange, sResponse.toString());
         }
         catch( IOException e )
         {
@@ -232,7 +235,7 @@ public class aliceHttpServer
             sResponse.append("<html><body>\n");
             sResponse.append("<h3>add db information</h3><br/>\n");
             sResponse.append("</body></html>");
-            aliceHttpServer.writeResponse( aHttpExchange, sResponse.toString());
+            HttpServer.writeResponse( aHttpExchange, sResponse.toString());
         }
         catch( IOException e )
         {
@@ -248,17 +251,17 @@ public class aliceHttpServer
             sResponse.append( "<html><body>\n" );
             sResponse.append( "<h3>eql list</h3><br/>\n" );
             sResponse.append( "<h4>Total:" +
-                                           aliceEPLRunner.mMap4Eql.size() +
+                                           EPLRunner.mMap4Eql.size() +
                                             "</h4><br/>\n" );
             for( Map.Entry<String,aliceEqlObject> entry :
-                               aliceEPLRunner.mMap4Eql.entrySet() )
+                               EPLRunner.mMap4Eql.entrySet() )
             {
                 sResponse.append( "<h4>List: " +
                                   (entry.getValue()).toString() +
                                   "</h4><br/>\n" );
             }
             sResponse.append("</body></html>");
-            aliceHttpServer.writeResponse( aHttpExchange,
+            HttpServer.writeResponse( aHttpExchange,
                                          sResponse.toString() );
         }
         catch( IOException e )
@@ -279,7 +282,7 @@ public class aliceHttpServer
         System.out.println("addEPLService..\n" );
         try
         {
-            sRet = aliceEPLRunner.runEPL( aID, aMain, aFrom, aWhere, aTo );
+            sRet = EPLRunner.runEPL( aID, aMain, aFrom, aWhere, aTo );
             sResponse.append("<html><body>\n");
             sResponse.append("<h4>command : start/h4><br/>\n");
             sResponse.append("<h4>result  : " + sRet + "</h4><br/>\n");
@@ -305,7 +308,7 @@ public class aliceHttpServer
  
         if( aID != null )
         {
-             sRet = aliceEPLRunner.stopEPL( aID );
+             sRet = EPLRunner.stopEPL( aID );
         }
  
         try

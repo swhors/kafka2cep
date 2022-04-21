@@ -1,15 +1,15 @@
 /***************************************************
  * aliceCepToDB2Mysql.java
  ***************************************************/
-package com.kafka2esper.cep;
+package com.simpson.kafka2cep.cep.to;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.simpson.kafka2cep.config.aliceCepDBInfo;
+import com.simpson.kafka2cep.service.aliceCepDBInterface;
+import com.simpson.kafka2cep.util.StringUtil;
 
 public class aliceCepToDB2Mysql extends aliceCepDBInfo implements aliceCepDBInterface
 {
@@ -20,8 +20,6 @@ public class aliceCepToDB2Mysql extends aliceCepDBInfo implements aliceCepDBInte
     private PreparedStatement mPreparedStatement = null;
     private int               mValueCount4Prepared = 0;
 
-    private int mDataCount = 0;
-    
     public aliceCepToDB2Mysql()
     {
     }
@@ -130,7 +128,7 @@ public class aliceCepToDB2Mysql extends aliceCepDBInfo implements aliceCepDBInte
         if( aQuery != null )
         {
             setQuery( aQuery );
-            mValueCount4Prepared = aliceCepUtil.getMatchedCount( aQuery, "\\?" );
+            mValueCount4Prepared = StringUtil.getMatchedCount( aQuery, "\\?" );
             if( mValueCount4Prepared > 0 )
             {
                 setPreparedMode( STMT_PREPARED );
