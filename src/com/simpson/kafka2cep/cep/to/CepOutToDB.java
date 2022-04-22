@@ -3,20 +3,21 @@
  ************************************************/
 package com.simpson.kafka2cep.cep.to;
 
-import com.simpson.kafka2cep.db.*;
+import com.simpson.kafka2cep.db.CepDBUserDef;
 
 public class CepOutToDB extends CepOutTarget
 {
     private String mDBClassName;
     public  Class<?> mDBClass     = null;
     public  CepDBUserDef mDB = null;
-    
+
     public CepOutToDB( String aDBClassName )
     {
         mDBClassName = aDBClassName;
     }
-    
-    public boolean open()
+
+    @Override
+	public boolean open()
     {
         boolean sRet = false;
         try
@@ -34,13 +35,13 @@ public class CepOutToDB extends CepOutTarget
                     }
                     else
                     {
-                        System.out.println("error : fail to connect to db. (" + 
+                        System.out.println("error : fail to connect to db. (" +
                                            mDBClassName + ")" );
                     }
                 }
                 else
                 {
-                    System.out.println( "error: can't find class. (" + 
+                    System.out.println( "error: can't find class. (" +
                                         mDBClassName + ")" );
                 }
             }
@@ -58,8 +59,9 @@ public class CepOutToDB extends CepOutTarget
 
         return sRet;
     }
-    
-    public void close()
+
+    @Override
+	public void close()
     {
         try
         {
@@ -73,8 +75,9 @@ public class CepOutToDB extends CepOutTarget
             System.out.println( "Exception : " + e );
         }
     }
-    
-    public boolean write( String[] aDatas )
+
+    @Override
+	public boolean write( String[] aDatas )
     {
         boolean sRet = false;
         System.out.println( "Write : " + aDatas[0] );
@@ -90,7 +93,8 @@ public class CepOutToDB extends CepOutTarget
         return sRet;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return ("Object=CepOutToDB, mDBClassName=" + mDBClassName );
     }
@@ -105,7 +109,8 @@ public class CepOutToDB extends CepOutTarget
         mDBClassName = aDBClassName;
     }
 
-    public int getType()
+    @Override
+	public int getType()
     {
         return mCepToDB;
     }

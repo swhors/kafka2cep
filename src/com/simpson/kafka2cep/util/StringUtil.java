@@ -1,11 +1,12 @@
 package com.simpson.kafka2cep.util;
 
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil
 {
     /******************************************************
-     * getMatchedCount     
+     * getMatchedCount
      *  : return count of mached pattern string.
      *
      *  aText    [IN] - Original text.

@@ -5,13 +5,16 @@ public class CepOutToTerm extends CepOutTarget
 	public CepOutToTerm()
 	{
 	}
+	@Override
 	public boolean open()
 	{
 		return true;
 	}
+	@Override
 	public void close()
 	{
 	}
+	@Override
 	public boolean write( String []aDatas)
 	{
 		StringBuffer sTermData = new StringBuffer();
@@ -22,10 +25,12 @@ public class CepOutToTerm extends CepOutTarget
 		System.out.println( sTermData );
 		return true;
 	}
+	@Override
 	public String toString()
 	{
-		return (String)"Object=ccpCepToTerm";
+		return "Object=ccpCepToTerm";
 	}
+	@Override
 	public int getType()
 	{
 		return mCepToTerm;

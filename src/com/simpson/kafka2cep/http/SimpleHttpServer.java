@@ -5,23 +5,22 @@ package com.simpson.kafka2cep.http;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import com.simpson.kafka2cep.cep.EPLRunner;
+import com.simpson.kafka2cep.cep.EqlObject;
+import com.simpson.kafka2cep.cep.to.CepOutTarget;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-
-import com.simpson.kafka2cep.cep.EPLRunner;
-import com.simpson.kafka2cep.cep.EqlObject;
-import com.simpson.kafka2cep.cep.to.*;
-
-import org.apache.log4j.Logger;
 
 public class SimpleHttpServer
 {
@@ -46,31 +45,32 @@ public class SimpleHttpServer
             this.msg = msg;
         }
     }
- 
+
     public Logger mLog = Logger.getLogger( this.getClass() );
- 
+
     public SimpleHttpServer()
     {
     }
 
     class aliceHttpHandler implements HttpHandler
     {
-        public void handle(HttpExchange exchange) throws IOException
+        @Override
+		public void handle(HttpExchange exchange) throws IOException
         {
             String requestMethod
                 = exchange.getRequestMethod();
             System.out.println("aliceHttpHandler : " + requestMethod );
- 
+
             if( requestMethod.equalsIgnoreCase( "GET" ) )
             {
                 Headers responseHeaders
                     = exchange.getResponseHeaders();
- 
+
                 System.out.println("handle="+requestMethod );
                 responseHeaders.set("Content-Type", "text/plain");
- 
+
                 exchange.sendResponseHeaders(200, 0);
-                
+
                 OutputStream responseBody = exchange.getResponseBody();
                 Headers requestHeaders = exchange.getRequestHeaders();
 
@@ -89,11 +89,12 @@ public class SimpleHttpServer
             }
         }
     }
- 
+
     // http://localhost:8000/info
     class aliceInfoHandler implements HttpHandler
     {
-        public void handle(HttpExchange aHttpExchange) throws IOException
+        @Override
+		public void handle(HttpExchange aHttpExchange) throws IOException
         {
             String response = "Use /get?hello=word&foo=bar to see how to handle url parameters";
             SimpleHttpServer.writeResponse(aHttpExchange, response.toString());
@@ -103,17 +104,18 @@ public class SimpleHttpServer
 
     class aliceGetHandler implements HttpHandler
     {
-        public void handle( HttpExchange aHttpExchange ) throws IOException
+        @Override
+		public void handle( HttpExchange aHttpExchange ) throws IOException
         {
             boolean  sRet      = false;
             boolean  sDebug    = false;
             CepOutTarget sCcpCepTo = null;
- 
+
             StringBuilder sResponse = new StringBuilder();
- 
+
             Map <String,String> sParams
                 = SimpleHttpServer.queryToMap(aHttpExchange.getRequestURI().getQuery());
- 
+
             String sCommand   = sParams.get( mTag4Command );
             String sID        = sParams.get( mTag4ID      );
             String sMain      = sParams.get( mTag4Main    );
@@ -121,15 +123,15 @@ public class SimpleHttpServer
             String sWhere     = sParams.get( mTag4Where   );
             String sTo        = sParams.get( mTag4To      );
             String sResult  = "success";
- 
+
             try
             {
                 if( sCommand == null )
                 {
                     throw new aliceHttpServerException("Command is null.");
                 }
- 
-                if( sCommand.equals( mTag4CmdAdd ) == true )
+
+                if( sCommand.equals( mTag4CmdAdd ) )
                 {
                     if( sID == null )
                     {
@@ -148,15 +150,15 @@ public class SimpleHttpServer
                         throw new aliceHttpServerException("to is null.");
                     }
                 }
-                else if( sCommand.equals( mTag4CmdDel ) == true )
+                else if( sCommand.equals( mTag4CmdDel ) )
                 {
                     if( sID == null )
                     {
                         throw new aliceHttpServerException("ID is null.");
                     }
                 }
- 
-                if( sDebug == true )
+
+                if( sDebug )
                 {
                     System.out.println( "command=" + sCommand +
                                         ", id="    + sID      +
@@ -165,12 +167,12 @@ public class SimpleHttpServer
                                         " where "  + sWhere   +
                                         " to "     + sTo );
                 }
- 
-                if( sCommand.equals( mTag4CmdShowEqlLst ) == true )
+
+                if( sCommand.equals( mTag4CmdShowEqlLst ) )
                 {
                     showEPLService( aHttpExchange );
                  }
-                else if( sCommand.equals( mTag4CmdAdd ) == true )
+                else if( sCommand.equals( mTag4CmdAdd ) )
                 {
                     addEPLService( sID,
                                    sMain,
@@ -179,11 +181,11 @@ public class SimpleHttpServer
                                    sTo,
                                    aHttpExchange );
                 }
-                else if( sCommand.equals( mTag4CmdDel ) == true )
+                else if( sCommand.equals( mTag4CmdDel ) )
                 {
                     sRet = delEPLService( sID,
                                           aHttpExchange );
-                    if( sRet == true )
+                    if( sRet )
                     {
                         System.out.println("Success to remove service.\n");
                     }
@@ -243,7 +245,7 @@ public class SimpleHttpServer
             System.out.println( "Exception : addDBInformation(" + e + ")" );
         }
     }
-    
+
     public void showEPLService( HttpExchange aHttpExchange )
     {
         StringBuilder sResponse = new StringBuilder();
@@ -270,7 +272,7 @@ public class SimpleHttpServer
             System.out.println( "Exception : showEPLService (" + e + ")" );
         }
     }
- 
+
     public boolean addEPLService( String       aID,
                                   String       aMain,
                                   String       aFrom,
@@ -300,18 +302,18 @@ public class SimpleHttpServer
         }
         return sRet;
     }
- 
+
     public boolean delEPLService( String       aID,
                                   HttpExchange aHttpExchange )
     {
-        boolean sRet = false; 
+        boolean sRet = false;
         StringBuilder sResponse = new StringBuilder();
- 
+
         if( aID != null )
         {
              sRet = EPLRunner.stopEPL( aID );
         }
- 
+
         try
         {
             sResponse.append("<html><body>\n");
@@ -324,10 +326,10 @@ public class SimpleHttpServer
         {
             System.out.println( "Exception : addEPLService (" + e + ")" );
         }
- 
+
         return sRet;
     }
- 
+
     public boolean run( int aPort ) throws IOException
     {
         InetSocketAddress addr = new InetSocketAddress( aPort );
@@ -338,12 +340,12 @@ public class SimpleHttpServer
         server.setExecutor(Executors.newCachedThreadPool() );
         server.start();
         System.out.println("Server is listening on port " + aPort +"." );
- 
+
         mLog.info( "Server is listening on port " + aPort + "." );
- 
+
         return true;
     }
- 
+
     public static void writeResponse( HttpExchange aHttpExchange,
             String       response) throws IOException
     {
@@ -352,7 +354,7 @@ public class SimpleHttpServer
         os.write(response.getBytes());
         os.close();
     }
- 
+
     /**
      * returns the url parameters in a map
      * @param query
@@ -364,7 +366,7 @@ public class SimpleHttpServer
         for( String sParam : aQuery.split("&") )
         {
             int sIndexOfSep = sParam.indexOf( "=", 0 );
- 
+
             if( sIndexOfSep > 0 )
             {
                 String sKey = sParam.substring( 0, sIndexOfSep );

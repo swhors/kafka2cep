@@ -84,7 +84,8 @@ public class EqlObject
         return mStmt;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "ccpEqlObject, " + mID    +
                ", "             + mMain  +

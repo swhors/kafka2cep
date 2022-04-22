@@ -1,8 +1,8 @@
 /***********************************************
  * DebugEvent.java
- * 
+ *
  * Author : swhors@naver.com
- * 
+ *
  ***********************************************/
 package com.simpson.kafka2cep.cep.event;
 
@@ -25,7 +25,8 @@ public class DebugEvent extends CepEvent
 
     }
 
-    public boolean setValues( String []aArgv )
+    @Override
+	public boolean setValues( String []aArgv )
     {
         int sCnt = 0;
         if( ( aArgv.length < mDebugItemNum - 1 ) ||
@@ -41,7 +42,7 @@ public class DebugEvent extends CepEvent
         applicationName = aArgv[sCnt++];
         className       = aArgv[sCnt++];
         sessionID       = aArgv[sCnt++];
-        
+
         if( aArgv.length == mDebugItemNum )
         {
             log         = aArgv[sCnt++];
@@ -54,7 +55,8 @@ public class DebugEvent extends CepEvent
         return true;
     }
 
-    public int length()
+    @Override
+	public int length()
     {
         return mDebugItemNum;
     }
@@ -99,11 +101,12 @@ public class DebugEvent extends CepEvent
         return log;
     }
 
-    public String[] getValues()
+    @Override
+	public String[] getValues()
     {
         int sCnt = 0;
         String [] sValues = new String[mDebugItemNum];
-        
+
         sValues[sCnt++] = date;
         sValues[sCnt++] = protocol;
         sValues[sCnt++] = logType;
@@ -115,7 +118,8 @@ public class DebugEvent extends CepEvent
         return sValues;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "{ccpDebugEvent, Item=" +mDebugItemNum +
                    ", date " +

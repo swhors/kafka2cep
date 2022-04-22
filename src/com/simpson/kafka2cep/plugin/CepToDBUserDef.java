@@ -20,19 +20,20 @@ public class CepToDBUserDef implements CepDBUserDef
                                     mDBName +
                                     "." +
                                     mTableName +
-                                    "(" + mCol1 + "," + mCol2 + ")" + 
+                                    "(" + mCol1 + "," + mCol2 + ")" +
                                     "values(?,?);";
-    
+
     public CepOutToDB2Mysql mDBDriver;
-    
+
     public CepToDBUserDef()
     {
     }
 
-    public boolean open()
+    @Override
+	public boolean open()
     {
         mDBDriver = new CepOutToDB2Mysql();
-        
+
         return mDBDriver.open( mHostIP,
                                mHostPort,
                                mHostUser,
@@ -41,7 +42,8 @@ public class CepToDBUserDef implements CepDBUserDef
                                mDBQuery );
     }
 
-    public void close()
+    @Override
+	public void close()
     {
         if( mDBDriver != null )
         {
@@ -49,7 +51,8 @@ public class CepToDBUserDef implements CepDBUserDef
         }
     }
 
-    public boolean insert( String[] aValues )
+    @Override
+	public boolean insert( String[] aValues )
     {
         if( mDBDriver != null )
         {

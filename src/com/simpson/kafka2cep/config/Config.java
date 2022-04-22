@@ -3,13 +3,13 @@
  ************************************************/
 package com.simpson.kafka2cep.config;
 
-import java.io.IOException;
-import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Properties;
 
 import com.simpson.kafka2cep.kafka.KafkaTopicInfo;
@@ -79,7 +79,7 @@ public class Config
                 mTags[mTag4EqlPrintDate] );
         if( sPrintDate != null )
         {
-            if( sPrintDate.equals( "true" ) == true  )
+            if( sPrintDate.equals( "true" )  )
             {
                 return true;
             }
@@ -204,7 +204,7 @@ public class Config
 
     static public void setEqlPrintDate( boolean aPrintDate )
     {
-        if( aPrintDate == true )
+        if( aPrintDate )
         {
             mProper.setProperty( mTags[mTag4EqlPrintDate], "true" );
         }

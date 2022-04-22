@@ -3,15 +3,16 @@
  ************************************************/
 package com.simpson.kafka2cep.kafka;
 
-import java.util.regex.*;
-import kafka.consumer.ConsumerIterator;
-import kafka.consumer.KafkaStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.espertech.esper.client.EPServiceProvider;
-
-import com.simpson.kafka2cep.util.*;
 import com.simpson.kafka2cep.cep.EPLRunner;
-import com.simpson.kafka2cep.cep.event.*;
+import com.simpson.kafka2cep.cep.event.CepEvent;
+import com.simpson.kafka2cep.util.JsonUtil;
+
+import kafka.consumer.ConsumerIterator;
+import kafka.consumer.KafkaStream;
 
 public class Consumer implements Runnable
 {
@@ -41,16 +42,16 @@ public class Consumer implements Runnable
         mThreadNum        = aThreadNum;
         mStreamEventName  = aStreamEventName;
         mDataType         = Integer.parseInt(aDataType);
-        mNewDataSeperator = aNewDataSeperator;       
+        mNewDataSeperator = aNewDataSeperator;
         mTopicName        = aTopicName;
         mClassName        = aClassName;
         mEpService        = aEpService;
 
-        if( aDataType.equals( "JSON" ) == true )
+        if( aDataType.equals( "JSON" ) )
         {
             mDataType = mDataType4JSON;
         }
-        else if( aDataType.equals( "CSV" ) == true )
+        else if( aDataType.equals( "CSV" ) )
         {
             mDataType = mDataType4CSV;
         }
@@ -61,26 +62,27 @@ public class Consumer implements Runnable
 
     }
 
-    public void run()
+    @Override
+	public void run()
     {
         String sFields[];
         String sLines[];
         int    sDataCnt    = 0;
         int    sCurLine    = 0;
         int    sItemLength  = 0;
-        
+
         Class<?> sActClass = null;
-        
+
         boolean sDebug0    = false;
         boolean sDebug1    = false;
-         
+
         CepEvent sEvent    = null;
-        
+
         boolean sSkipFirst = false;
         ConsumerIterator<byte[], byte[]> it = mStream.iterator();
 
         sActClass = EPLRunner.getEventClass( mTopicName );
-        
+
         if( sActClass != null )
         {
             while( true )
@@ -103,7 +105,7 @@ public class Consumer implements Runnable
                                     sItemLength = sEvent.length();
                                     mEpService.getEPRuntime().sendEvent(sEvent);
                                     sDataCnt ++;
-                                    if( sDebug1 == true )
+                                    if( sDebug1 )
                                     {
 
                                         System.out.println( mThreadNum +
@@ -121,7 +123,7 @@ public class Consumer implements Runnable
                         }
                         else
                         {
-                            System.out.println( 
+                            System.out.println(
                                            mThreadNum +
                                            "'s thread : received null data" );
                         }
@@ -140,20 +142,20 @@ public class Consumer implements Runnable
                             {
                                 sEvent = ( CepEvent) sActClass.newInstance();
                                 sItemLength = sEvent.length();
-                                if( sDebug1 == true )
+                                if( sDebug1 )
                                 {
                                     System.out.println( sEvent.toString() );
                                 }
-                                sFields = JsonUtil.getValues( 
+                                sFields = JsonUtil.getValues(
                                                  mLineMatcher.group(1),
                                                  sItemLength );
 
                                 if( sFields != null )
                                 {
-                                    sEvent.setValues( sFields ); 
+                                    sEvent.setValues( sFields );
                                     mEpService.getEPRuntime().sendEvent(sEvent);
                                     sDataCnt ++;
-                                    if( sDebug1 == true )
+                                    if( sDebug1 )
                                     {
 
                                         System.out.println( mThreadNum +

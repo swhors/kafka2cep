@@ -31,7 +31,7 @@ public class DBInfo
     {
       mDBPassword = aDBPassword;
     }
-    
+
     public String getDBPassword()
     {
         return mDBPassword;
@@ -41,12 +41,12 @@ public class DBInfo
     {
         mDBUser = aDBUser;
     }
-    
+
     public String getDBUser()
     {
         return mDBUser;
     }
-    
+
     public void setDBPort( int aDBPort )
     {
         mDBPort = aDBPort;

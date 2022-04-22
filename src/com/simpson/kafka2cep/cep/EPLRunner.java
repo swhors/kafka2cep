@@ -1,45 +1,47 @@
 /**************************************************
  * aliceEPLRunner.java
- * 
+ *
  * author : swhors@naver.com
  **************************************************/
 
 package com.simpson.kafka2cep.cep;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPStatement;
+import com.simpson.kafka2cep.cep.event.CepEvent;
+import com.simpson.kafka2cep.cep.event.CepEventListener;
 import com.simpson.kafka2cep.cep.to.CepOutTarget;
 import com.simpson.kafka2cep.kafka.KafkaTopicInfo;
-import com.simpson.kafka2cep.cep.event.CepEventListener;
-import com.simpson.kafka2cep.cep.event.CepEvent;
 import com.simpson.kafka2cep.util.XmlReader;
- 
+
 public class EPLRunner
 {
     static final private String mTag4LocaleUS     = "Locale.US";
     static final private String mTag4LocaleJAPAN  = "Locale.JAPAN";
     static final private String mTag4LocaleCHINA  = "Locale.CHINA";
- 
+
     static public HashMap<String, EqlObject > mMap4Eql;
- 
+
     static private String mEqlListFileName   = "";
- 
+
     static public EPServiceProvider    mEpService;
- 
+
     static private Locale  mLocale    = Locale.KOREA;
     static private boolean mPrintDate = false;
- 
+
     static private HashMap< String, EPLRunner >
                                            mEPLRunners = null;
- 
+
     public String   mTopic;
     public String   mClassName;
     public String   mDataType;
     public Class<?> mActClass   = null;
     public int      mEventItemNumber = 0;
- 
+
     public EPLRunner( String aTopic,
                          String aClassName,
                          String aDataType )
@@ -52,18 +54,20 @@ public class EPLRunner
             mActClass = Class.forName( mClassName );
             mEventItemNumber = ((CepEvent)mActClass.newInstance()).length();
         }
-        catch( Exception e)
-        {
+        catch (ClassNotFoundException e) {
+            System.out.println( "ClassNotFoundException : " + e );        	
+        }
+        catch( Exception e) {
             System.out.println( "Exception : " + e );
         }
     }
- 
+
     static public boolean stopEPL( String aID )
     {
         boolean     sRet       = false;
         EPStatement sStatement = null;
-        EqlObject sObject = (EqlObject)mMap4Eql.get( aID );
- 
+        EqlObject sObject = mMap4Eql.get( aID );
+
         if( sObject != null )
         {
             sStatement = (EPStatement) sObject.getStmt();
@@ -76,31 +80,31 @@ public class EPLRunner
                 sRet = true;
             }
         }
- 
+
         return sRet;
     }
- 
+
     static int getClassItemCountByFrom( String aFrom )
     {
         int sItemCntNum = 0;
- 
+
         for( Map.Entry<String, EPLRunner> sEntry : mEPLRunners.entrySet() )
         {
             EPLRunner sRunner = sEntry.getValue();
-            if( aFrom.startsWith( sRunner.mClassName ) == true )
+            if( aFrom.startsWith( sRunner.mClassName ) )
             {
                 sItemCntNum = sRunner.mEventItemNumber;
                 break;
             }
         }
- 
+
         return sItemCntNum;
     }
- 
+
     static int getClassItemCount( String aClsName )
     {
         int sItemCntNum = 0;
- 
+
         for( Map.Entry<String, EPLRunner> sEntry : mEPLRunners.entrySet() )
         {
             EPLRunner sRunner = sEntry.getValue();
@@ -110,10 +114,10 @@ public class EPLRunner
                 break;
             }
         }
- 
+
         return sItemCntNum;
     }
- 
+
     static public boolean runEPL( String aID,
                                   String aMain,
                                   String aFrom,
@@ -123,15 +127,15 @@ public class EPLRunner
         String   sEql  = aMain + " from " + aFrom;
         String   sMain = "";
         String []sKeys = null;
- 
+
         CepOutTarget     sCcpCepTo  = null;
         EPStatement  sStatement = null;
- 
+
         boolean      sRet        = false;
         int          sSpaceIndex = 0;
- 
+
         sSpaceIndex = aMain.indexOf(" ", 0 );
- 
+
         if( sSpaceIndex > 0 )
         {
             sMain = aMain.substring( sSpaceIndex+1, aMain.length() );
@@ -140,12 +144,12 @@ public class EPLRunner
         {
             sMain = aMain;
         }
- 
+
         sKeys = sMain.split(",");
- 
+
         if( aWhere != null )
         {
-            if( aWhere.isEmpty() == false )
+            if( !aWhere.isEmpty() )
             {
                 if( aWhere.length() > 0 )
                 {
@@ -153,9 +157,9 @@ public class EPLRunner
                 }
             }
         }
- 
+
         EqlObject sObject = mMap4Eql.get( aID );
- 
+
         if( sObject == null || sObject.getStmt() == null )
         {
             try
@@ -166,11 +170,11 @@ public class EPLRunner
                 {
                     throw new Exception("to is illegal.");
                 }
- 
+
                 sEventItemNumber = getClassItemCount( aFrom );
- 
+
                 sStatement = mEpService.getEPAdministrator().createEPL( sEql );
- 
+
                 CepEventListener sListener
                            = new CepEventListener( sCcpCepTo,
                                                    sKeys,
@@ -179,7 +183,7 @@ public class EPLRunner
                                                    sEventItemNumber );
                 sStatement.addListener( sListener );
                 sRet = true;
- 
+
                 if( sObject == null )
                 {
                     sObject = new EqlObject( aID,
@@ -197,7 +201,7 @@ public class EPLRunner
                     mMap4Eql.put( aID, sObject );
                 }
                 System.out.println("Running EQL = " + sEql );
- 
+
             }
             catch( Exception e )
             {
@@ -210,7 +214,7 @@ public class EPLRunner
                 {
                     sCcpCepTo.close();
                 }
- 
+
                 sObject = mMap4Eql.get( aID );
                 if( sObject != null )
                 {
@@ -224,7 +228,7 @@ public class EPLRunner
         }
         return sRet;
     }
- 
+
     public static Class<?> getEventClass( String aTopic )
     {
         EPLRunner sRunner;
@@ -238,7 +242,7 @@ public class EPLRunner
         }
         return null;
     }
- 
+
     public static boolean initEPLService(
                        String                  aEqlListFile,
                        EPServiceProvider       aServiceProvider,
@@ -250,11 +254,11 @@ public class EPLRunner
         mEpService       = aServiceProvider;
         mEqlListFileName = aEqlListFile;
         boolean sRet     = true;
- 
+
         mPrintDate = aPrintDate;
- 
+
         mEPLRunners = new HashMap< String, EPLRunner >();
- 
+
         try
         {
             for( Map.Entry<String, KafkaTopicInfo > sEntry:
@@ -270,15 +274,15 @@ public class EPLRunner
             }
             if( aLocale != null )
             {
-                if( aLocale.equals( mTag4LocaleCHINA ) == true )
+                if( aLocale.equals( mTag4LocaleCHINA ) )
                 {
                     mLocale = Locale.CHINA;
                 }
-                else if( aLocale.equals( mTag4LocaleUS ) == true )
+                else if( aLocale.equals( mTag4LocaleUS ) )
                 {
                     mLocale = Locale.US;
                 }
-                else if( aLocale.equals( mTag4LocaleJAPAN ) == true )
+                else if( aLocale.equals( mTag4LocaleJAPAN ) )
                 {
                     mLocale = Locale.JAPAN;
                 }
@@ -287,22 +291,22 @@ public class EPLRunner
                     mLocale = Locale.KOREA;
                 }
             }
- 
+
             mMap4Eql = XmlReader.read(  aEqlListFile );
- 
-            if( sDebug == true )
+
+            if( sDebug )
             {
                 System.out.println("aEqlList = " + aEqlListFile );
             }
- 
+
             for( Map.Entry<String, EqlObject> sEntry : mMap4Eql.entrySet() )
             {
                 EqlObject sEQL = sEntry.getValue();
-                if( runEPL( String.valueOf(sEQL.getID()),
+                if( !runEPL( String.valueOf(sEQL.getID()),
                             sEQL.getMain(),
                             sEQL.getFrom(),
                             sEQL.getWhere(),
-                            sEQL.getTo() ) == false )
+                            sEQL.getTo() ) )
                 {
                     sRet = false;
                     break;
@@ -314,7 +318,7 @@ public class EPLRunner
             sRet = false;
             System.out.println( "Exception : " + e );
         }
- 
+
         return sRet;
     }
 }

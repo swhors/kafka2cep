@@ -28,7 +28,8 @@ public class TraceEvent extends CepEvent
     {
     }
 
-    public boolean setValues( String []aArgv )
+    @Override
+	public boolean setValues( String []aArgv )
     {
         int sCnt = 0;
 
@@ -51,7 +52,7 @@ public class TraceEvent extends CepEvent
         toUri         = aArgv[sCnt++];
         errorCode     = Integer.parseInt( aArgv[sCnt++], 10 );
         reason        = aArgv[sCnt++];
-        
+
         if( aArgv.length == mTraceItemNum )
         {
             log       = aArgv[sCnt++];
@@ -63,7 +64,8 @@ public class TraceEvent extends CepEvent
         return true;
     }
 
-    public int length()
+    @Override
+	public int length()
     {
         return mTraceItemNum;
     }
@@ -138,7 +140,8 @@ public class TraceEvent extends CepEvent
         return log;
     }
 
-    public String[] getValues()
+    @Override
+	public String[] getValues()
     {
         int sCnt = 0;
 
@@ -161,7 +164,8 @@ public class TraceEvent extends CepEvent
         return sValues;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "{ccpTraceEvent, Item=" +mTraceItemNum +
                    ", date " +

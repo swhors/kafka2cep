@@ -3,21 +3,6 @@
  ************************************************/
 package com.simpson.kafka2cep.kafka;
 
-import java.util.*;
-import java.util.regex.*;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Properties;
-
-import kafka.consumer.ConsumerIterator;
-import kafka.consumer.KafkaStream;
-
-import com.espertech.esper.client.Configuration;
-import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
-
 abstract public class KafkaInfo
 {
     private String mTopic;
@@ -61,5 +46,6 @@ abstract public class KafkaInfo
         mObjClass = aObjClass;
     }
 
-    abstract public String toString();
+    @Override
+	abstract public String toString();
 }

@@ -1,8 +1,8 @@
 /***********************************************
  * aliceCdrEvent.java
- * 
+ *
  * Author : swhors@naver.com
- * 
+ *
  ***********************************************/
 package com.simpson.kafka2cep.cep.event;
 
@@ -43,7 +43,8 @@ public class CdrEvent extends CepEvent
 
     }
 
-    public boolean setValues( String []aArgv )
+    @Override
+	public boolean setValues( String []aArgv )
     {
         int sCnt = 0;
         if( aArgv.length < 24 ||
@@ -86,7 +87,8 @@ public class CdrEvent extends CepEvent
         return true;
     }
 
-    public int length()
+    @Override
+	public int length()
     {
         return mCdrItemNum;
     }
@@ -217,12 +219,13 @@ public class CdrEvent extends CepEvent
         return VMName;
     }
 
-    public String[] getValues()
+    @Override
+	public String[] getValues()
     {
         int sCnt = 0;
 
         String [] sValues = new String[mCdrItemNum];
-        
+
         sValues[sCnt++] = Date;
         sValues[sCnt++] = CallType;
         sValues[sCnt++] = SourceDevice;
@@ -251,7 +254,8 @@ public class CdrEvent extends CepEvent
         return sValues;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "{ccpCdrEvent, Item=" +mCdrItemNum +
                ", Date " +
@@ -271,7 +275,7 @@ public class CdrEvent extends CepEvent
                ", TCCode" +
                ", TCReason" +
                ", StartCallTime" +
-               ", EndCallTime" + 
+               ", EndCallTime" +
                ", UserAgentInfo" +
                ", RegiNumber" +
                ", LastCallee" +

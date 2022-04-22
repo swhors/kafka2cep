@@ -3,21 +3,19 @@
  ***********************************************/
 package com.simpson.kafka2cep.kafka;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Properties;
-
-import kafka.consumer.KafkaStream;
-import kafka.consumer.ConsumerConfig;
-import kafka.javaapi.consumer.ConsumerConnector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.espertech.esper.client.EPServiceProvider;
+import com.simpson.kafka2cep.config.Config;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-
-import com.simpson.kafka2cep.config.*;
+import kafka.consumer.ConsumerConfig;
+import kafka.consumer.KafkaStream;
+import kafka.javaapi.consumer.ConsumerConnector;
 
 public class ConsumerThreadPool
 {
@@ -26,11 +24,11 @@ public class ConsumerThreadPool
 
 
     private EPServiceProvider mEpService;
-    private int               mOpThreadNum; 
+    private int               mOpThreadNum;
     private String            mEventClsName;
-    private String            mNewDataSeperator; 
+    private String            mNewDataSeperator;
     private String            mDataType;    //private
-    
+
     HashMap<String, ConsumerConnector> mConsumers;
 
     private ExecutorService []mExecutor;
@@ -73,7 +71,7 @@ public class ConsumerThreadPool
         {
             mConsumer.shutdown();
         }
-  
+
         for( ExecutorService sExecutor:mExecutor )
         {
             if( sExecutor != null )
@@ -102,7 +100,7 @@ public class ConsumerThreadPool
         {
             List<KafkaStream<byte[], byte[]>> sTopicListeners =
                                sConsumerMap.get( sTopic );
-            
+
             sTopic     = sEntry.getKey();
             sTopicInfo = sEntry.getValue();
 

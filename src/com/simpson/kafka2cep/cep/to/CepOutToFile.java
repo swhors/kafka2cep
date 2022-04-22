@@ -9,24 +9,29 @@ public class CepOutToFile extends CepOutTarget
 		mPath     = aPath;
 		mFileName = aFileName;
 	}
+	@Override
 	public boolean open()
 	{
 		return true;
 	}
+	@Override
 	public void close()
 	{
 	}
+	@Override
 	public boolean write( String []aDatas)
 	{
 		return true;
 	}
+	@Override
 	public String toString()
-	{ 
-		return (String)"Object=ccpCepToFile,mPath=" + 
+	{
+		return "Object=ccpCepToFile,mPath=" +
 				mPath +
 				",mFileName=" +
 				mFileName;
 	}
+	@Override
 	public int getType()
 	{
 		return mCepToFile;

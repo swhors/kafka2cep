@@ -3,10 +3,11 @@
  ***************************************************/
 package com.simpson.kafka2cep.cep.to;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import com.simpson.kafka2cep.config.DBInfo;
 import com.simpson.kafka2cep.db.CepDBInterface;
 import com.simpson.kafka2cep.util.StringUtil;
@@ -33,8 +34,9 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
     {
         setDBAddress( aUser, aPasswd, aHost, aPort, aDBName, aQuery );
     }
-    
-    public boolean open( String aHost,
+
+    @Override
+	public boolean open( String aHost,
                          int    aPort,
                          String aDBUser,
                          String aDBPasswd,
@@ -43,7 +45,7 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
     {
         boolean sRet = false;
         setDBAddress( aDBUser, aDBPasswd, aHost, aPort, aDBName, aQuery );
-        
+
         try
         {
             sRet = open();
@@ -57,7 +59,8 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
 
     }
 
-    public boolean open() throws SQLException
+    @Override
+	public boolean open() throws SQLException
     {
         try
         {
@@ -94,7 +97,8 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
         return true;
     }
 
-    public void close()
+    @Override
+	public void close()
     {
         try
         {
@@ -141,7 +145,7 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
         {
         }
         setDBName( aDBName );
-        
+
         if( aPort == 0 )
         {
             setDBConInfo( DB_CONNECTION_PRE + aHost + "/" + aDBName );
@@ -153,8 +157,9 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
 
         }
     }
-    
-    public boolean insert( String[] aValues )
+
+    @Override
+	public boolean insert( String[] aValues )
     {
         int sCnt = 1;
         boolean sRet = true;
@@ -178,8 +183,9 @@ public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
         }
         return sRet;
     }
-    
-    public boolean isConnected()
+
+    @Override
+	public boolean isConnected()
     {
         return false;
     }

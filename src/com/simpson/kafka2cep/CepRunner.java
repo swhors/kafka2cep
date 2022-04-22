@@ -2,54 +2,54 @@
  * CepRunner.java
  **********************************************/
 package com.simpson.kafka2cep;
- 
-import java.io.IOException;
 
-import com.simpson.kafka2cep.config.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
- 
+import java.util.Set;
+
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
-
 import com.simpson.kafka2cep.cep.EPLRunner;
+import com.simpson.kafka2cep.config.Config;
+import com.simpson.kafka2cep.config.KafkaConfig;
 import com.simpson.kafka2cep.http.SimpleHttpServer;
 import com.simpson.kafka2cep.kafka.ConsumerThreadPool;
- 
+
 public class CepRunner implements KafkaConfig
 {
     final static String mTag4UseHttp  = "use_http";
     final static String mTag4ConfFile = "conf";
- 
+
     final static String mDefConfFile = "conf/ccpCep.conf";
- 
+
     private boolean mUsingMultiThreadPool = true;
     private boolean mUsingHttpServer      = false;
- 
+
     //public Config mConfig;
- 
+
     public String  mEqlXmlFileName = "eqllist.xml";
- 
+
     public CepRunner( String aConfFileName )
     {
         Config.loadConfig( aConfFileName );
- 
+
         mUsingMultiThreadPool = true;
         mUsingHttpServer      = false;
     }
- 
+
     public boolean getUsingMultiThreadPool()
     {
         return mUsingMultiThreadPool;
     }
- 
+
     public boolean getUsingHttpServer()
     {
         return mUsingHttpServer;
     }
- 
+
     public void setUsingMultiThreadPool( boolean aVal )
     {
         mUsingMultiThreadPool = aVal;
@@ -59,24 +59,26 @@ public class CepRunner implements KafkaConfig
     {
         mUsingHttpServer = aVal;
     }
- 
-    public static void printArgs( HashMap aMap )
+
+    public static void printArgs( HashMap<String, String> aMap )
     {
-        Iterator iter = aMap.entrySet().iterator();
-        while( iter.hasNext() )
-        {
-            Entry entry = (Entry) iter.next();
-            System.out.println( "Key:"+entry.getKey() +
-                                ", Value:" + entry.getValue() );
-        }
+    	Set<String> keys = aMap.keySet();
+    	Iterator<String> it = keys.iterator();
+    	
+    	while(it.hasNext()) {
+    		String key = it.next();
+    		String value = aMap.get(key);
+    		System.out.println("Key:"+key +
+                               ", Value:" + value);
+    	}
     }
- 
-    public static HashMap parseArgs( String []aArgs )
+
+    public static HashMap<String, String> parseArgs( String []aArgs )
     {
         String  sArgOpt   = "";
         String  sArgVal   = "";
-        HashMap sArgsMap  = new HashMap();
- 
+        HashMap<String, String> sArgsMap  = new HashMap<String, String>();
+
         for( int i = 0; i < aArgs.length; i++)
         {
             switch( aArgs[i].charAt(0) )
@@ -114,28 +116,28 @@ public class CepRunner implements KafkaConfig
                     break;
             }
         }
- 
+
         return sArgsMap;
     }
- 
+
     public static void main( String []aArgs )
     {
         int     sStepCnt  = 0;
         boolean sUseHttp  = false;
-        HashMap sArgsMap  = null;
+        HashMap <String, String> sArgsMap;
         String  sConfFile = CepRunner.mDefConfFile;
- 
- 
+
+
         System.out.println( "[Step " + sStepCnt++ +"] "  +
                             "Start to initialization of" +
                             " aliceCdrRunner.\n");
- 
+
         // Argument Parse.
         System.out.println( "[Step " + sStepCnt++ +"] " +
                             "Parse argument.[1]\n");
         sArgsMap = parseArgs( aArgs );
         printArgs( sArgsMap );
- 
+
         if( sArgsMap != null )
         {
             if( sArgsMap.get(mTag4UseHttp) != null )
@@ -143,7 +145,7 @@ public class CepRunner implements KafkaConfig
                 String sArgVal = sArgsMap.get(mTag4UseHttp).toString();
                 if( sArgVal != null )
                 {
-                    if( sArgVal.equals("yes") == true )
+                    if( sArgVal.equals("yes") )
                     {
                         sUseHttp = true;
                     }
@@ -162,44 +164,43 @@ public class CepRunner implements KafkaConfig
                 sConfFile = sArgsMap.get(mTag4ConfFile).toString();
             }
         }
- 
+
         /**********************************
          * Initilaization CepRunner   *
          **********************************/
         CepRunner sCounter = new CepRunner( sConfFile );
         sCounter.setUsingHttpServer( sUseHttp );
- 
+
         /**********************************
          * Initilaization CEP Engine      *
          **********************************/
         System.out.println( "[Step " + sStepCnt++ +"] " +
                             "Start CEP Engine.\n");
- 
+
         Configuration sConfiguration = new Configuration();
         sConfiguration.addEventTypeAutoName(
                    Config.getEqlClsID() );
         //sConfiguration.addEventTypeAlias(
         //          "ccpCdrEvent",
         //          aliceCdrEvent.class );
- 
+
         EPServiceProvider sEpService =
              EPServiceProviderManager.getDefaultProvider(
                                             sConfiguration );
         /**********************************
          * Regist EPL Lists from File.    *
          **********************************/
-        if( EPLRunner.initEPLService( Config.getEqlList(),
+        if( !EPLRunner.initEPLService( Config.getEqlList(),
                                          sEpService,
                                          Config.getEqlPrintDate(),
                                          Config.getEqlLocale(),
-                                         Config.getKafkaTopic() )
-            == false )
+                                         Config.getKafkaTopic() ) )
         {
             System.out.println("Error : fail to regist epl lists.");
             System.exit(0);
         }
- 
- 
+
+
         /**********************************
          * Start Kafka Engine             *
          **********************************/
@@ -218,11 +219,11 @@ public class CepRunner implements KafkaConfig
                                Config.getKafkaDataSeperator()
                            );
         consumerThread.run();
- 
+
         /**********************************
          * Start WWW Service              *
          **********************************/
-        if( sCounter.getUsingHttpServer() == true )
+        if( sCounter.getUsingHttpServer() )
         {
             System.out.println( "[Step " + sStepCnt++ +"] " +
                                 "Start WWW Service.\n");
@@ -237,7 +238,7 @@ public class CepRunner implements KafkaConfig
                 System.out.println("Exception : " + e );
             }
         }
- 
+
         while( true )
         {
             try

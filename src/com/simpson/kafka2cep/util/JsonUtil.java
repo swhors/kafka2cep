@@ -2,7 +2,8 @@ package com.simpson.kafka2cep.util;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.regex.*; 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JsonUtil
 {
@@ -52,17 +53,17 @@ public class JsonUtil
 
     static final public String mSpecialChar2 = mSpecialChar + "\"";
 
-    static final public String mSpecialCharExt = mSpecialChar2 + "\\)" +"\\("; 
+    static final public String mSpecialCharExt = mSpecialChar2 + "\\)" +"\\(";
 
     static final public String mPattern4JSONLine = "\\{([a-zA-Z0-9" +
                                                                                 mSpecialCharExt +
-                                                                                "]*)\\}"; 
+                                                                                "]*)\\}";
     static public String[] getLines( String aLine )
     {
         boolean sDebug = false;
         String []sLines = null;
 
-        if( sDebug == true )
+        if( sDebug )
         {
             System.out.println( "Pattern   = " + mPattern4JSONLine );
             System.out.println( "aLine     = " + aLine );
@@ -91,13 +92,13 @@ public class JsonUtil
         boolean   sDebug   = false;
         int       sCurItem = 0;
 
-        if( sDebug == true )
+        if( sDebug )
         {
             System.out.println( "Length    = " + aItemLength );
             System.out.println( "Pattern   = " + mPattern4JSONField );
             System.out.println( "aLine     = " + aLines );
         }
-     
+
         sValues = new String[aItemLength];
 
         Pattern mLinePattern = Pattern.compile( mPattern4JSONField,
@@ -107,7 +108,7 @@ public class JsonUtil
 
         while( mLineMatcher.find() )
         {
-            if( sDebug == true )
+            if( sDebug )
             {
                 System.out.println( "-1- " + mLineMatcher.group(1) );
                 System.out.println( "-2- " + mLineMatcher.group(2) );
@@ -129,10 +130,10 @@ public class JsonUtil
         }
         return sValues;
     }
-    
+
     static public void main( String []aArgv )
     {
-        FileReader sFileReader = null; 
+        FileReader sFileReader = null;
         File       sFile       = null;
 
         if( aArgv.length != 2 )
@@ -147,7 +148,7 @@ public class JsonUtil
             {
                 sFile   = new File( aArgv[0] );
                 int sItemCnt = Integer.parseInt( aArgv[1] );
-                if( sFile.exists() == true )
+                if( sFile.exists() )
                 {
                     String sLine;
                     long   sDataSize = sFile.length();

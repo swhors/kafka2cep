@@ -27,12 +27,13 @@ public abstract class CepOutTarget
 
     public CepOutTarget()
     {
-    };
+    }
 
     // Definitions of abstract function.
     abstract public int     getType();
     abstract public boolean write( String []aDatas );
-    abstract public String  toString();
+    @Override
+	abstract public String  toString();
     abstract public void    close();
     abstract public boolean open();
 
@@ -44,7 +45,7 @@ public abstract class CepOutTarget
     	String     sFileName  = "";
     	String     sPath      = "";
     	String     sClassName = "";
-    	if( aCepToString.startsWith( CepOutTarget.mTag4File ) == true )
+    	if( aCepToString.startsWith( CepOutTarget.mTag4File ) )
     	{
     		sCepToType = mCepToFile;
     		sArgs = ( aCepToString.substring( 5,
@@ -52,21 +53,21 @@ public abstract class CepOutTarget
     				split(",");
     		for( String sArg : sArgs )
     		{
-    			if( sArg.startsWith( mTag4Name ) == true )
+    			if( sArg.startsWith( mTag4Name ) )
     			{
     				sFileName = sArg.substring( mLen4Name, sArg.length() );
     			}
-    			else if( sArg.startsWith( mTag4Path ) == true )
+    			else if( sArg.startsWith( mTag4Path ) )
     			{
     				sPath = sArg.substring( mLen4Path, sArg.length() );
     			}
     		}
     	}
-    	else if( aCepToString.startsWith( CepOutTarget.mTag4Sock ) == true )
+    	else if( aCepToString.startsWith( CepOutTarget.mTag4Sock ) )
     	{
     		sCepToType = mCepToSock;
     	}
-    	else if( aCepToString.startsWith( CepOutTarget.mTag4DB ) == true )
+    	else if( aCepToString.startsWith( CepOutTarget.mTag4DB ) )
     	{
     		sCepToType = mCepToDB;
 
@@ -74,13 +75,13 @@ public abstract class CepOutTarget
 
     		if( sArg != null )
     		{
-    			if( sArg.startsWith( mTag4Class ) == true )
+    			if( sArg.startsWith( mTag4Class ) )
     			{
     				sClassName = sArg.substring( mLen4Class, sArg.length() );
     			}
     		}
     	}
-    	else if( aCepToString.startsWith( CepOutTarget.mTag4Term) == true )
+    	else if( aCepToString.startsWith( CepOutTarget.mTag4Term) )
     	{
     		sCepToType = mCepToTerm;
     	}
@@ -88,19 +89,19 @@ public abstract class CepOutTarget
     	switch( sCepToType )
     	{
     	case mCepToFile:
-    		sCepTo = (CepOutTarget)(new CepOutToFile( sPath, sFileName ));
+    		sCepTo = (new CepOutToFile( sPath, sFileName ));
     		break;
     	case mCepToTerm:
-    		sCepTo = (CepOutTarget)(new CepOutToTerm());
+    		sCepTo = (new CepOutToTerm());
     		break;
     	case mCepToDB:
     	//case mCepToClass:
     		String []sArgs4Cls = sClassName.split(",");
     		System.out.println( "Case mCepToDB ("  + sArgs4Cls[1] + ")");
-    		sCepTo = (CepOutTarget)(new CepOutToDB( sArgs4Cls[1].substring(5,sArgs4Cls[1].length())));
+    		sCepTo = (new CepOutToDB( sArgs4Cls[1].substring(5,sArgs4Cls[1].length())));
     		if( sCepTo != null )
     		{
-    			if( sCepTo.open() == false )
+    			if( !sCepTo.open() )
     			{
     				sCepTo = null;
     			}

@@ -4,13 +4,13 @@
 
 package com.simpson.kafka2cep.cep.event;
 
-import java.util.*;
-
-import com.simpson.kafka2cep.cep.to.CepOutTarget;
-import java.text.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
+import com.simpson.kafka2cep.cep.to.CepOutTarget;
 
 public class CepEventListener implements UpdateListener
 {
@@ -30,25 +30,26 @@ public class CepEventListener implements UpdateListener
         mKeys      = aKeys;
         mPrintDate = aPrintDate;
         mLocale    = aLocale;
- 
+
         mValueNumber = aKeys.length;
- 
+
         for( String sKey : aKeys )
         {
-            if( sKey.equals("*") == true )
+            if( sKey.equals("*") )
             {
                 mValueNumber += ( aItemNumber - 1 );
                 break;
             }
         }
- 
-        if( mPrintDate == true )
+
+        if( mPrintDate )
         {
             mValueNumber++;
         }
     }
 
-    public void update( EventBean[] aNewEvents,
+    @Override
+	public void update( EventBean[] aNewEvents,
                                     EventBean[] aOldEvents )
     {
         EventBean        sEvent     = aNewEvents[0];
@@ -58,7 +59,7 @@ public class CepEventListener implements UpdateListener
         Date             sCurTime = null;
         SimpleDateFormat sTimeFormat = null;
 
-        if( mPrintDate == true )
+        if( mPrintDate )
         {
             sTimeFormat = new SimpleDateFormat( "yyyy.MM.dd HH:mm:ss",
                                                 mLocale );
@@ -68,14 +69,14 @@ public class CepEventListener implements UpdateListener
         if( mCcpCepTo != null )
         {
             sValues = new String[mValueNumber];
-            if( mPrintDate == true )
+            if( mPrintDate )
             {
                 sValues[sCnt++] = sTimeFormat.format( sCurTime );
             }
- 
+
             for( String sKey : mKeys )
             {
-                if( sKey.equals("*") == true )
+                if( sKey.equals("*") )
                 {
                     String [] sAllValue;
                     CepEvent sEvent1 =

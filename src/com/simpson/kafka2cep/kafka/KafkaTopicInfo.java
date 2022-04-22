@@ -8,8 +8,8 @@ public class KafkaTopicInfo
     public String mTopic;
     public String mClassName;
     public String mDataType;
-    
-    public KafkaTopicInfo( String aTopic, 
+
+    public KafkaTopicInfo( String aTopic,
                               String aClassName,
                               String aDataType )
     {
@@ -25,7 +25,7 @@ public class KafkaTopicInfo
                ", className=" + mClassName +
                ",datatype=" + mDataType ;
     }
-    
+
     public String getClassName()
     {
         return mClassName;
