@@ -7,12 +7,21 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Properties;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.simpson.kafka2cep.kafka.KafkaTopicInfo;
+
+import com.simpson.kafka2cep.config.Kafka;
+import com.simpson.kafka2cep.config.Kafka.Obj;
+import com.simpson.kafka2cep.config.Kafka.Zoo;
+import com.simpson.kafka2cep.config.Eql;
+import com.simpson.kafka2cep.config.Kafka2CepConfig;
 
 public class Config
 {
@@ -306,6 +315,23 @@ public class Config
 
     public Config()
     {
+    }
+    
+    static public boolean loadConfig2(String filePath) {
+    	XmlMapper xmlMapper = new XmlMapper();
+    	FileReader reader;
+		try {
+			reader = new FileReader("D:\\file.txt");
+			JsonParser parser = xmlMapper.createParser(reader);
+	    	return true;
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return false;
     }
 
     static public boolean loadConfig( String aFilePath )

@@ -5,9 +5,10 @@ clean:
 compile:
 	mvn compile
 
-build-with-dep: compile
+dependency:
 	mvn assembly:assembly
+
+build: compile 
 	mvn package
 
-build: compile
-	mvn package
+build-with-dep: compile dependency build
