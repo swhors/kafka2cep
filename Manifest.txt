@@ -1,0 +1,2 @@
+Class-Path: ../class/
+Main-Class:com.simpson.kafka2cep.Kafka2Cep
