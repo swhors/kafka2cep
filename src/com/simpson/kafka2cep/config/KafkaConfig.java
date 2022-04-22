@@ -1,6 +1,6 @@
 package com.simpson.kafka2cep.config;
 
-public interface KafkaProperties
+public interface KafkaConfig
 {
     final static String zkXonnect       = "127.0.0.1:2181";
     final static String groupId         = "console-consumer-90636";

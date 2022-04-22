@@ -1,11 +1,11 @@
 /********************************************
- * aliceCepDBInterface.java
+ * CepDBInterface.java
  ********************************************/
-package com.simpson.kafka2cep.service;
+package com.simpson.kafka2cep.db;
 
 import java.sql.SQLException;
 
-public interface aliceCepDBInterface
+public interface CepDBInterface
 {
     public abstract boolean open() throws SQLException;
     public abstract boolean open( String aHost,

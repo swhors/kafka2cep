@@ -1,8 +1,8 @@
 package com.simpson.kafka2cep.cep.to;
 
-public class aliceCepToTerm extends aliceCepTo
+public class CepOutToTerm extends CepOutTarget
 {
-	public aliceCepToTerm()
+	public CepOutToTerm()
 	{
 	}
 	public boolean open()

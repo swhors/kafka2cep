@@ -1,10 +1,13 @@
 /***********************************************
- * aliceDebugEvent.java :
+ * DebugEvent.java
+ * 
+ * Author : swhors@naver.com
+ * 
  ***********************************************/
 package com.simpson.kafka2cep.cep.event;
 
 
-public class aliceDebugEvent extends aliceEvent
+public class DebugEvent extends CepEvent
 {
     final int mDebugItemNum = 8;
 
@@ -17,7 +20,7 @@ public class aliceDebugEvent extends aliceEvent
     private String sessionID;
     private String log;
 
-    public aliceDebugEvent()
+    public DebugEvent()
     {
 
     }

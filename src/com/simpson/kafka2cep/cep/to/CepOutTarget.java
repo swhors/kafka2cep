@@ -1,9 +1,9 @@
 /************************************************
- * aliceCepToDB.java
+ * CepOutToDB.java
  ************************************************/
 package com.simpson.kafka2cep.cep.to;
 
-public abstract class aliceCepTo
+public abstract class CepOutTarget
 {
     final static public String mTag4File    = "file:";
     static final public String mTag4Unknown = "??:";
@@ -25,7 +25,7 @@ public abstract class aliceCepTo
     public final static int mCepToDB      = 3;
     public final static int mCepToSock    = 4;
 
-    public aliceCepTo()
+    public CepOutTarget()
     {
     };
 
@@ -36,16 +36,15 @@ public abstract class aliceCepTo
     abstract public void    close();
     abstract public boolean open();
 
-    static public aliceCepTo getInstance( String aCepToString )
+    static public CepOutTarget getInstance( String aCepToString )
     {
     	int        sCepToType = mCepToUnknown;
-    	aliceCepTo   sCepTo     = null;
+    	CepOutTarget   sCepTo     = null;
     	String   []sArgs      = null;
-    	String     sArgVal    = null;
     	String     sFileName  = "";
     	String     sPath      = "";
     	String     sClassName = "";
-    	if( aCepToString.startsWith( aliceCepTo.mTag4File ) == true )
+    	if( aCepToString.startsWith( CepOutTarget.mTag4File ) == true )
     	{
     		sCepToType = mCepToFile;
     		sArgs = ( aCepToString.substring( 5,
@@ -63,11 +62,11 @@ public abstract class aliceCepTo
     			}
     		}
     	}
-    	else if( aCepToString.startsWith( aliceCepTo.mTag4Sock ) == true )
+    	else if( aCepToString.startsWith( CepOutTarget.mTag4Sock ) == true )
     	{
     		sCepToType = mCepToSock;
     	}
-    	else if( aCepToString.startsWith( aliceCepTo.mTag4DB ) == true )
+    	else if( aCepToString.startsWith( CepOutTarget.mTag4DB ) == true )
     	{
     		sCepToType = mCepToDB;
 
@@ -81,7 +80,7 @@ public abstract class aliceCepTo
     			}
     		}
     	}
-    	else if( aCepToString.startsWith( aliceCepTo.mTag4Term) == true )
+    	else if( aCepToString.startsWith( CepOutTarget.mTag4Term) == true )
     	{
     		sCepToType = mCepToTerm;
     	}
@@ -89,16 +88,16 @@ public abstract class aliceCepTo
     	switch( sCepToType )
     	{
     	case mCepToFile:
-    		sCepTo = (aliceCepTo)(new aliceCepToFile( sPath, sFileName ));
+    		sCepTo = (CepOutTarget)(new CepOutToFile( sPath, sFileName ));
     		break;
     	case mCepToTerm:
-    		sCepTo = (aliceCepTo)(new aliceCepToTerm());
+    		sCepTo = (CepOutTarget)(new CepOutToTerm());
     		break;
     	case mCepToDB:
     	//case mCepToClass:
     		String []sArgs4Cls = sClassName.split(",");
     		System.out.println( "Case mCepToDB ("  + sArgs4Cls[1] + ")");
-    		sCepTo = (aliceCepTo)(new aliceCepToDB( sArgs4Cls[1].substring(5,sArgs4Cls[1].length())));
+    		sCepTo = (CepOutTarget)(new CepOutToDB( sArgs4Cls[1].substring(5,sArgs4Cls[1].length())));
     		if( sCepTo != null )
     		{
     			if( sCepTo.open() == false )
@@ -120,8 +119,8 @@ public abstract class aliceCepTo
        String sArg4DB    = "db:dbcon=1";
        String sArg4Term  = "term:";
 
-       System.out.println( "Test for aliceCepToDB.....");
-       aliceCepTo saliceCepToDB= aliceCepTo.getInstance( sArg4DB );
+       System.out.println( "Test for CepOutToDB.....");
+       CepOutTarget saliceCepToDB= CepOutTarget.getInstance( sArg4DB );
        if( saliceCepToDB != null )
        {
        System.out.println( saliceCepToDB.toString() );
@@ -131,8 +130,8 @@ public abstract class aliceCepTo
        {
        System.out.println( "Object is null.("+sArg4DB+")" );
        }
-       System.out.println( "Test for aliceCepToTerm.....");
-       aliceCepTo saliceCepToTerm= aliceCepTo.getInstance( sArg4Term );
+       System.out.println( "Test for CepOutToTerm.....");
+       CepOutTarget saliceCepToTerm= CepOutTarget.getInstance( sArg4Term );
        if( saliceCepToDB != null )
        {
        System.out.println( saliceCepToTerm.toString() );

@@ -1,12 +1,15 @@
 /***********************************************
- * aliceEvent.java :
+ * CepEvent.java
+ * 
+ * Author : swhors@naver.com
+ * 
  ***********************************************/
 
 package com.simpson.kafka2cep.cep.event;
 
-abstract public class aliceEvent
+abstract public class CepEvent
 {
-    public aliceEvent()
+    public CepEvent()
     {
     }
     

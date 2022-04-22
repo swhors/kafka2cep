@@ -1,9 +1,9 @@
 /***************************************************
- * aliceCepDBUserDef.java
+ * CepDBUserDef.java
  ***************************************************/
-package com.simpson.kafka2cep.service;
+package com.simpson.kafka2cep.db;
 
-public interface aliceCepDBUserDef
+public interface CepDBUserDef
 {
     public abstract boolean open();
     public abstract void close();

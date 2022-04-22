@@ -1,5 +1,5 @@
 /************************************************
- * aliceConfig.java
+ * Config.java
  ************************************************/
 package com.simpson.kafka2cep.config;
 
@@ -12,9 +12,9 @@ import java.io.InputStreamReader;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
-import com.simpson.kafka2cep.model.*;
+import com.simpson.kafka2cep.kafka.KafkaTopicInfo;
 
-public class aliceConfig
+public class Config
 {
     static final private int mTag4WWWPort          = 0;
     static final private int mTag4EqlList          = 1;
@@ -53,7 +53,7 @@ public class aliceConfig
     };
 
     //private HashMap<String,ccpKafkaTopicInfo> mTopic =
-    //              new HashMap<String, aliceKafkaTopicInfo >();
+    //              new HashMap<String, KafkaTopicInfo >();
 
     static private Properties mProper;
     static private String     mConfFile;
@@ -102,7 +102,7 @@ public class aliceConfig
         return mProper.getProperty( mTags[mTag4KafkaGroupID] );
     }
 
-    static public HashMap< String, aliceKafkaTopicInfo > getKafkaTopic()
+    static public HashMap< String, KafkaTopicInfo > getKafkaTopic()
     //static public HashMap< String, Object> getKafkaTopic()
     {
         String []sTopics;
@@ -110,8 +110,8 @@ public class aliceConfig
         String sTopicLine =
             mProper.getProperty(mTags[mTag4KafkaTopic]);
 
-        HashMap<String, aliceKafkaTopicInfo > sHashMap
-            = new HashMap<String, aliceKafkaTopicInfo>();
+        HashMap<String, KafkaTopicInfo > sHashMap
+            = new HashMap<String, KafkaTopicInfo>();
         //HashMap<String, Object > sHashMap
         //    = new HashMap<String, Object>();
 
@@ -125,7 +125,7 @@ public class aliceConfig
                 if( sFields != null )
                 {
                     sHashMap.put( sFields[0],
-                            new aliceKafkaTopicInfo( sFields[0],
+                            new KafkaTopicInfo( sFields[0],
                                 sFields[1],
                                 sFields[2]) );
                 }
@@ -304,7 +304,7 @@ public class aliceConfig
         return sRet;
     }
 
-    public aliceConfig()
+    public Config()
     {
     }
 
@@ -358,8 +358,8 @@ public class aliceConfig
     /*
        public static void main( String aArgs[] )
        {
-       aliceConfig.loadConfig( aArgs[0] );
-       aliceConfig.print();
+       Config.loadConfig( aArgs[0] );
+       Config.print();
        }
      */
 }

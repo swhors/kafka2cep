@@ -1,11 +1,14 @@
 /***********************************************
- * aliceCdrEvent.java :
+ * aliceCdrEvent.java
+ * 
+ * Author : swhors@naver.com
+ * 
  ***********************************************/
 package com.simpson.kafka2cep.cep.event;
 
 
 
-public class CdrEvent extends aliceEvent
+public class CdrEvent extends CepEvent
 {
     final int mCdrItemNum = 25;
 

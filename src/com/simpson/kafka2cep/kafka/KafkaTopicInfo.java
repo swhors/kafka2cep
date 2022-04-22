@@ -1,15 +1,15 @@
 /************************************************
- * aliceKafkaTopicInfo.java
+ * KafkaTopicInfo.java
  ************************************************/
-package com.simpson.kafka2cep.model;
+package com.simpson.kafka2cep.kafka;
 
-public class aliceKafkaTopicInfo
+public class KafkaTopicInfo
 {
     public String mTopic;
     public String mClassName;
     public String mDataType;
     
-    public aliceKafkaTopicInfo( String aTopic, 
+    public KafkaTopicInfo( String aTopic, 
                               String aClassName,
                               String aDataType )
     {

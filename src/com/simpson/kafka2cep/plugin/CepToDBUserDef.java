@@ -1,12 +1,12 @@
 /***********************************************
- * aliceCepToDBUserDef.java
+ * CepToDBUserDef.java
  ***********************************************/
 package com.simpson.kafka2cep.plugin;
 
-import com.simpson.kafka2cep.service.aliceCepDBUserDef;
-import com.simpson.kafka2cep.cep.to.aliceCepToDB2Mysql;
+import com.simpson.kafka2cep.cep.to.CepOutToDB2Mysql;
+import com.simpson.kafka2cep.db.CepDBUserDef;
 
-public class aliceCepToDBUserDef implements aliceCepDBUserDef
+public class CepToDBUserDef implements CepDBUserDef
 {
     final private String mHostIP     = "localhost";
     final private int    mHostPort   = 3306;
@@ -23,15 +23,15 @@ public class aliceCepToDBUserDef implements aliceCepDBUserDef
                                     "(" + mCol1 + "," + mCol2 + ")" + 
                                     "values(?,?);";
     
-    public aliceCepToDB2Mysql mDBDriver;
+    public CepOutToDB2Mysql mDBDriver;
     
-    public aliceCepToDBUserDef()
+    public CepToDBUserDef()
     {
     }
 
     public boolean open()
     {
-        mDBDriver = new aliceCepToDB2Mysql();
+        mDBDriver = new CepOutToDB2Mysql();
         
         return mDBDriver.open( mHostIP,
                                mHostPort,

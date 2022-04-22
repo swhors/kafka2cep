@@ -17,13 +17,12 @@ import com.espertech.esper.client.EPServiceProvider;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
-import com.simpson.kafka2cep.model.*;
 import com.simpson.kafka2cep.config.*;
 
 public class ConsumerThreadPool
 {
     private final ConsumerConnector mConsumer;
-    private final HashMap<String, aliceKafkaTopicInfo> mTopic;
+    private final HashMap<String, KafkaTopicInfo> mTopic;
 
 
     private EPServiceProvider mEpService;
@@ -37,7 +36,7 @@ public class ConsumerThreadPool
     private ExecutorService []mExecutor;
 
     public ConsumerThreadPool(
-              HashMap<String,aliceKafkaTopicInfo> aTopic,
+              HashMap<String,KafkaTopicInfo> aTopic,
               EPServiceProvider aEpService,
               Integer           aThreadNum,
               String            aEventClsName,
@@ -59,12 +58,12 @@ public class ConsumerThreadPool
     private static ConsumerConfig createConsumerConfig()
     {
         Properties props = new Properties();
-        props.put("zookeeper.connect", aliceConfig.getKafkaZooList() );
-        props.put("group.id",          aliceConfig.getKafkaGroupID() );
+        props.put("zookeeper.connect", Config.getKafkaZooList() );
+        props.put("group.id",          Config.getKafkaGroupID() );
         props.put("zookeeper.session.timeout.ms", "400"  );
         props.put("zookeeper.sync.time.ms",       "200"  );
         props.put("auto.commit.interval.ms",      "1000" );
-        props.put("auto.offset.reset", aliceConfig.getKafkaOffsetReset() );
+        props.put("auto.offset.reset", Config.getKafkaOffsetReset() );
         return new ConsumerConfig(props);
     }
 
@@ -93,13 +92,13 @@ public class ConsumerThreadPool
         String sTopic    = "";
         int    sTopicNum = mTopic.size();
 
-        aliceKafkaTopicInfo sTopicInfo;
+        KafkaTopicInfo sTopicInfo;
 
         mExecutor =  new ExecutorService[sTopicNum];
 
         Map<String, List<KafkaStream<byte[], byte[]>>> sConsumerMap =
                 mConsumer.createMessageStreams( sTopicCountMap );
-        for( Map.Entry<String,aliceKafkaTopicInfo> sEntry:mTopic.entrySet() )
+        for( Map.Entry<String,KafkaTopicInfo> sEntry:mTopic.entrySet() )
         {
             List<KafkaStream<byte[], byte[]>> sTopicListeners =
                                sConsumerMap.get( sTopic );
@@ -119,7 +118,7 @@ public class ConsumerThreadPool
                 System.out.println( "Will be start " +
                                     sThreadNum +
                                     "'s thread." );
-                mExecutor[sCnt].submit( new aliceConsumer(
+                mExecutor[sCnt].submit( new Consumer(
                                                stream,
                                                mEpService,
                                                sThreadNum++,

@@ -3,7 +3,7 @@
  ********************************************/
 package com.simpson.kafka2cep.config;
 
-public class aliceCepDBInfo
+public class DBInfo
 {
     final public int STMT_NONEPREPARED = 0;
     final public int STMT_PREPARED = 1;

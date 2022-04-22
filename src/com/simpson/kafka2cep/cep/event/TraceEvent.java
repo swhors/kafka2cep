@@ -1,13 +1,11 @@
 
 /*****************************************
- * aliceTraceEvent.java :
+ * TraceEvent.java :
  *****************************************/
 
-package com.simpson.kafka2cep.model;
+package com.simpson.kafka2cep.cep.event;
 
-import com.simpson.kafka2cep.cep.event.*;
-
-public class aliceTraceEvent extends aliceEvent
+public class TraceEvent extends CepEvent
 {
     final int mTraceItemNum = 14;
 
@@ -26,7 +24,7 @@ public class aliceTraceEvent extends aliceEvent
     private String reason;
     private String log;
 
-    public aliceTraceEvent()
+    public TraceEvent()
     {
     }
 

@@ -1,9 +1,8 @@
 /************************************************
- * aliceConsumer.java
+ * Consumer.java
  ************************************************/
 package com.simpson.kafka2cep.kafka;
 
-import java.util.*;
 import java.util.regex.*;
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
@@ -14,7 +13,7 @@ import com.simpson.kafka2cep.util.*;
 import com.simpson.kafka2cep.cep.EPLRunner;
 import com.simpson.kafka2cep.cep.event.*;
 
-public class aliceConsumer implements Runnable
+public class Consumer implements Runnable
 {
     final private int mDataType4Unknown   = 0;
     final private int mDataType4CSV       = 1;
@@ -30,7 +29,7 @@ public class aliceConsumer implements Runnable
     private String mTopicName;
     private String mClassName;
 
-    public aliceConsumer( KafkaStream       aKafkaStream,
+    public Consumer( KafkaStream       aKafkaStream,
                           EPServiceProvider aEpService,
                           Integer           aThreadNum,
                           String            aStreamEventName,
@@ -75,7 +74,7 @@ public class aliceConsumer implements Runnable
         boolean sDebug0    = false;
         boolean sDebug1    = false;
          
-        aliceEvent sEvent    = null;
+        CepEvent sEvent    = null;
         
         boolean sSkipFirst = false;
         ConsumerIterator<byte[], byte[]> it = mStream.iterator();
@@ -99,7 +98,7 @@ public class aliceConsumer implements Runnable
                             {
                                 sFields = sLine.split( "," );
                                 try{
-                                    sEvent = (aliceEvent)sActClass.newInstance();
+                                    sEvent = (CepEvent)sActClass.newInstance();
                                     sEvent.setValues( sFields );
                                     sItemLength = sEvent.length();
                                     mEpService.getEPRuntime().sendEvent(sEvent);
@@ -139,7 +138,7 @@ public class aliceConsumer implements Runnable
                         {
                             try
                             {
-                                sEvent = ( aliceEvent) sActClass.newInstance();
+                                sEvent = ( CepEvent) sActClass.newInstance();
                                 sItemLength = sEvent.length();
                                 if( sDebug1 == true )
                                 {

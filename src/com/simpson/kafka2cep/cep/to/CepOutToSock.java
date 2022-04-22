@@ -1,8 +1,8 @@
 package com.simpson.kafka2cep.cep.to;
 
-public class aliceCepToSock extends aliceCepTo
+public class CepOutToSock extends CepOutTarget
 {
-	public aliceCepToSock( )
+	public CepOutToSock( )
 	{
 	}
 	public boolean write( String []aDatas)

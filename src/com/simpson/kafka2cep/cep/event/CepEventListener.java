@@ -1,26 +1,26 @@
 /***********************************************
- * aliceEventListener.java
+ * CepEventListener.java
  ***********************************************/
 
 package com.simpson.kafka2cep.cep.event;
 
 import java.util.*;
 
-import com.simpson.kafka2cep.cep.to.aliceCepTo;
+import com.simpson.kafka2cep.cep.to.CepOutTarget;
 import java.text.*;
 
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 
-public class aliceEventListener implements UpdateListener
+public class CepEventListener implements UpdateListener
 {
-    private aliceCepTo mCcpCepTo;
+    private CepOutTarget mCcpCepTo;
     private String[]   mKeys;
     private Locale     mLocale;
     private boolean    mPrintDate = false;
     private int        mValueNumber = 0;
 
-    public aliceEventListener( aliceCepTo   aCcpCepTo,
+    public CepEventListener( CepOutTarget   aCcpCepTo,
                              String   []aKeys,
                              boolean    aPrintDate,
                              Locale     aLocale,
@@ -78,8 +78,8 @@ public class aliceEventListener implements UpdateListener
                 if( sKey.equals("*") == true )
                 {
                     String [] sAllValue;
-                    aliceEvent sEvent1 =
-                                (aliceEvent) aNewEvents[0].getUnderlying();
+                    CepEvent sEvent1 =
+                                (CepEvent) aNewEvents[0].getUnderlying();
                     sAllValue = sEvent1.getValues();
                     for( String sValue: sAllValue )
                     {

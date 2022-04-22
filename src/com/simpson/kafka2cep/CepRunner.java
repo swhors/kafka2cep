@@ -1,5 +1,5 @@
 /**********************************************
- * aliceCepRunner.java
+ * CepRunner.java
  **********************************************/
 package com.simpson.kafka2cep;
  
@@ -18,7 +18,7 @@ import com.simpson.kafka2cep.cep.EPLRunner;
 import com.simpson.kafka2cep.http.SimpleHttpServer;
 import com.simpson.kafka2cep.kafka.ConsumerThreadPool;
  
-public class aliceCepRunner implements KafkaProperties
+public class CepRunner implements KafkaConfig
 {
     final static String mTag4UseHttp  = "use_http";
     final static String mTag4ConfFile = "conf";
@@ -28,13 +28,13 @@ public class aliceCepRunner implements KafkaProperties
     private boolean mUsingMultiThreadPool = true;
     private boolean mUsingHttpServer      = false;
  
-    //public aliceConfig mConfig;
+    //public Config mConfig;
  
     public String  mEqlXmlFileName = "eqllist.xml";
  
-    public aliceCepRunner( String aConfFileName )
+    public CepRunner( String aConfFileName )
     {
-        aliceConfig.loadConfig( aConfFileName );
+        Config.loadConfig( aConfFileName );
  
         mUsingMultiThreadPool = true;
         mUsingHttpServer      = false;
@@ -123,7 +123,7 @@ public class aliceCepRunner implements KafkaProperties
         int     sStepCnt  = 0;
         boolean sUseHttp  = false;
         HashMap sArgsMap  = null;
-        String  sConfFile = aliceCepRunner.mDefConfFile;
+        String  sConfFile = CepRunner.mDefConfFile;
  
  
         System.out.println( "[Step " + sStepCnt++ +"] "  +
@@ -164,9 +164,9 @@ public class aliceCepRunner implements KafkaProperties
         }
  
         /**********************************
-         * Initilaization aliceCepRunner   *
+         * Initilaization CepRunner   *
          **********************************/
-        aliceCepRunner sCounter = new aliceCepRunner( sConfFile );
+        CepRunner sCounter = new CepRunner( sConfFile );
         sCounter.setUsingHttpServer( sUseHttp );
  
         /**********************************
@@ -177,7 +177,7 @@ public class aliceCepRunner implements KafkaProperties
  
         Configuration sConfiguration = new Configuration();
         sConfiguration.addEventTypeAutoName(
-                   aliceConfig.getEqlClsID() );
+                   Config.getEqlClsID() );
         //sConfiguration.addEventTypeAlias(
         //          "ccpCdrEvent",
         //          aliceCdrEvent.class );
@@ -188,11 +188,11 @@ public class aliceCepRunner implements KafkaProperties
         /**********************************
          * Regist EPL Lists from File.    *
          **********************************/
-        if( EPLRunner.initEPLService( aliceConfig.getEqlList(),
+        if( EPLRunner.initEPLService( Config.getEqlList(),
                                          sEpService,
-                                         aliceConfig.getEqlPrintDate(),
-                                         aliceConfig.getEqlLocale(),
-                                         aliceConfig.getKafkaTopic() )
+                                         Config.getEqlPrintDate(),
+                                         Config.getEqlLocale(),
+                                         Config.getKafkaTopic() )
             == false )
         {
             System.out.println("Error : fail to regist epl lists.");
@@ -208,14 +208,14 @@ public class aliceCepRunner implements KafkaProperties
         System.out.printf("Starting ... [com.ccp.cep]\n" );
         ConsumerThreadPool consumerThread
                     = new ConsumerThreadPool(
-                               aliceConfig.getKafkaTopic(),
+                               Config.getKafkaTopic(),
                                sEpService,
                                Integer.parseInt(
-                                   aliceConfig.getKafkaThreadNum()
+                                   Config.getKafkaThreadNum()
                                ),
-                               aliceConfig.getEqlClsID(),
-                               aliceConfig.getKafkaDataType(),
-                               aliceConfig.getKafkaDataSeperator()
+                               Config.getEqlClsID(),
+                               Config.getKafkaDataType(),
+                               Config.getKafkaDataSeperator()
                            );
         consumerThread.run();
  
@@ -230,7 +230,7 @@ public class aliceCepRunner implements KafkaProperties
             {
                 SimpleHttpServer sHttpServer = new SimpleHttpServer();
                 sHttpServer.run( Integer.parseInt(
-                                          aliceConfig.getWWWPort() ) );
+                                          Config.getWWWPort() ) );
             }
             catch( IOException e )
             {

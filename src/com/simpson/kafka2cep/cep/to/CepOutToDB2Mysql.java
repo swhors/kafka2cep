@@ -1,5 +1,5 @@
 /***************************************************
- * aliceCepToDB2Mysql.java
+ * CepOutToDB2Mysql.java
  ***************************************************/
 package com.simpson.kafka2cep.cep.to;
 
@@ -7,11 +7,11 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import com.simpson.kafka2cep.config.aliceCepDBInfo;
-import com.simpson.kafka2cep.service.aliceCepDBInterface;
+import com.simpson.kafka2cep.config.DBInfo;
+import com.simpson.kafka2cep.db.CepDBInterface;
 import com.simpson.kafka2cep.util.StringUtil;
 
-public class aliceCepToDB2Mysql extends aliceCepDBInfo implements aliceCepDBInterface
+public class CepOutToDB2Mysql extends DBInfo implements CepDBInterface
 {
     private final String DB_DRIVER         = "com.mysql.jdbc.Driver";
     private final String DB_CONNECTION_PRE = "jdbc:mysql://";
@@ -20,11 +20,11 @@ public class aliceCepToDB2Mysql extends aliceCepDBInfo implements aliceCepDBInte
     private PreparedStatement mPreparedStatement = null;
     private int               mValueCount4Prepared = 0;
 
-    public aliceCepToDB2Mysql()
+    public CepOutToDB2Mysql()
     {
     }
 
-    public aliceCepToDB2Mysql( String aUser,
+    public CepOutToDB2Mysql( String aUser,
                              String aPasswd,
                              String aHost,
                              int    aPort,
@@ -59,7 +59,6 @@ public class aliceCepToDB2Mysql extends aliceCepDBInfo implements aliceCepDBInte
 
     public boolean open() throws SQLException
     {
-        PreparedStatement preparedStatement = null;
         try
         {
             Class.forName( DB_DRIVER );

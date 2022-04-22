@@ -1,10 +1,10 @@
 package com.simpson.kafka2cep.cep.to;
 
-public class aliceCepToFile extends aliceCepTo
+public class CepOutToFile extends CepOutTarget
 {
 	String mPath;
 	String mFileName;
-	public aliceCepToFile( String aPath, String aFileName )
+	public CepOutToFile( String aPath, String aFileName )
 	{
 		mPath     = aPath;
 		mFileName = aFileName;

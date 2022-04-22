@@ -1,19 +1,17 @@
 /************************************************
- * aliceCepToDB.java
+ * CepOutToDB.java
  ************************************************/
 package com.simpson.kafka2cep.cep.to;
 
-import java.sql.*;
-import com.simpson.kafka2cep.model.*;
-import com.simpson.kafka2cep.service.*;
+import com.simpson.kafka2cep.db.*;
 
-public class aliceCepToDB extends aliceCepTo
+public class CepOutToDB extends CepOutTarget
 {
     private String mDBClassName;
     public  Class<?> mDBClass     = null;
-    public  aliceCepDBUserDef mDB = null;
+    public  CepDBUserDef mDB = null;
     
-    public aliceCepToDB( String aDBClassName )
+    public CepOutToDB( String aDBClassName )
     {
         mDBClassName = aDBClassName;
     }
@@ -29,7 +27,7 @@ public class aliceCepToDB extends aliceCepTo
                 mDBClass = Class.forName( mDBClassName );
                 if( mDBClass != null )
                 {
-                    mDB = (aliceCepDBUserDef) mDBClass.newInstance();
+                    mDB = (CepDBUserDef) mDBClass.newInstance();
                     if( mDB != null )
                     {
                         sRet = mDB.open();
@@ -94,7 +92,7 @@ public class aliceCepToDB extends aliceCepTo
 
     public String toString()
     {
-        return ("Object=aliceCepToDB, mDBClassName=" + mDBClassName );
+        return ("Object=CepOutToDB, mDBClassName=" + mDBClassName );
     }
 
     public String getDBClassName()

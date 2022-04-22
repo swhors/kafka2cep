@@ -15,15 +15,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
- 
+
+import com.simpson.kafka2cep.cep.EqlObject;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.OutputKeys;
- 
-import com.simpson.kafka2cep.model.aliceEqlObject;
 
 public class XmlReader
 {
@@ -38,14 +38,14 @@ public class XmlReader
     static private final String mXmlTag4Where    = "WHERE";
     static private final String mXmlTag4To       = "TO";
  
-    //HashMap< String , aliceEqlObject > mMap4Eql;
+    //HashMap< String , EqlObject > mMap4Eql;
  
     public XmlReader( String aFilePath )
     {
         mFilePath = aFilePath;
     }
  
-    static public boolean write( String aOutFileName, HashMap<String, aliceEqlObject > aMap4Eql )
+    static public boolean write( String aOutFileName, HashMap<String, EqlObject > aMap4Eql )
     {
         try
         {
@@ -74,7 +74,7 @@ public class XmlReader
             sRootElmnt.appendChild( sEqlListsElmnt );
  
             // SQL Element
-            for(Map.Entry<String, aliceEqlObject > sEntry : aMap4Eql.entrySet())
+            for(Map.Entry<String, EqlObject > sEntry : aMap4Eql.entrySet())
             {
                 Element sEQL        = sDoc.createElement( mXmlTag4EQL  );
                 Element sIDElmnt    = sDoc.createElement( mXmlTag4ID   );
@@ -83,7 +83,7 @@ public class XmlReader
                 Element sWHEREElmnt = sDoc.createElement( mXmlTag4Where );
                 Element sTOElmnt    = sDoc.createElement( mXmlTag4To   );
  
-                aliceEqlObject sObject = sEntry.getValue();
+                EqlObject sObject = sEntry.getValue();
 
                 System.out.println( sObject.toString() );
 
@@ -138,10 +138,10 @@ public class XmlReader
         return true;
     }
 
-    static public HashMap<String,aliceEqlObject> read( String aInFileName )
+    static public HashMap<String,EqlObject> read( String aInFileName )
     {
-        HashMap< String, aliceEqlObject> sMap4Eql
-                      = new HashMap< String, aliceEqlObject >();
+        HashMap< String, EqlObject> sMap4Eql
+                      = new HashMap< String, EqlObject >();
         try
         {
             System.out.println( "enter..\n");
@@ -299,7 +299,7 @@ public class XmlReader
                                             ",to=" + sTo );
 
                         sMap4Eql.put( sID,
-                                      new aliceEqlObject( sID,
+                                      new EqlObject( sID,
                                                         sMain,
                                                         sFrom,
                                                         sWhere,
@@ -322,7 +322,7 @@ public class XmlReader
  
     public static void main(String aArgv[])
     {
-        HashMap<String, aliceEqlObject > sMap4Eql = null;
+        HashMap<String, EqlObject > sMap4Eql = null;
         String sInFileName = "backup/test.xml";
         String sOutFileName = "test1.xml";
  

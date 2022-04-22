@@ -1,6 +1,6 @@
 package com.simpson.kafka2cep.plugin;
 
-public interface aliceCepDBUserDef
+public interface CepDBUserDef
 {
     public abstract boolean open();
     public abstract void    close();

@@ -18,8 +18,8 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import com.simpson.kafka2cep.cep.EPLRunner;
+import com.simpson.kafka2cep.cep.EqlObject;
 import com.simpson.kafka2cep.cep.to.*;
-import com.simpson.kafka2cep.model.aliceEqlObject;
 
 import org.apache.log4j.Logger;
 
@@ -107,7 +107,7 @@ public class SimpleHttpServer
         {
             boolean  sRet      = false;
             boolean  sDebug    = false;
-            aliceCepTo sCcpCepTo = null;
+            CepOutTarget sCcpCepTo = null;
  
             StringBuilder sResponse = new StringBuilder();
  
@@ -254,7 +254,7 @@ public class SimpleHttpServer
             sResponse.append( "<h4>Total:" +
                                            EPLRunner.mMap4Eql.size() +
                                             "</h4><br/>\n" );
-            for( Map.Entry<String,aliceEqlObject> entry :
+            for( Map.Entry<String,EqlObject> entry :
                                EPLRunner.mMap4Eql.entrySet() )
             {
                 sResponse.append( "<h4>List: " +

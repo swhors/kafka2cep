@@ -1,7 +1,7 @@
 /************************************************
- * aliceKafkaInfo.java
+ * KafkaInfo.java
  ************************************************/
-package com.simpson.kafka2cep.model;
+package com.simpson.kafka2cep.kafka;
 
 import java.util.*;
 import java.util.regex.*;
@@ -18,13 +18,13 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
-abstract public class aliceKafkaInfo
+abstract public class KafkaInfo
 {
     private String mTopic;
     private String mObjClassName;
     private Object mObjClass;
 
-    public aliceKafkaInfo()
+    public KafkaInfo()
     {
         mTopic = "";
         mObjClassName = "";

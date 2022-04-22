@@ -1,6 +1,6 @@
-package com.simpson.kafka2cep.model;
+package com.simpson.kafka2cep.cep;
 
-public class aliceEqlObject
+public class EqlObject
 {
     private int    mID;
     private String mMain;
@@ -9,7 +9,7 @@ public class aliceEqlObject
     private String mTo;
     private Object mStmt;
 
-    public aliceEqlObject( String aID,
+    public EqlObject( String aID,
                          String aMain,
                          String aFrom,
                          String aWhere,

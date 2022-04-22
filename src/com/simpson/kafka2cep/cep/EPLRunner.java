@@ -10,13 +10,11 @@ import java.util.*;
 
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPStatement;
-
-import com.simpson.kafka2cep.model.aliceEqlObject;
-import com.simpson.kafka2cep.cep.to.aliceCepTo;
-import com.simpson.kafka2cep.cep.event.aliceEventListener;
-import com.simpson.kafka2cep.cep.event.aliceEvent;
+import com.simpson.kafka2cep.cep.to.CepOutTarget;
+import com.simpson.kafka2cep.kafka.KafkaTopicInfo;
+import com.simpson.kafka2cep.cep.event.CepEventListener;
+import com.simpson.kafka2cep.cep.event.CepEvent;
 import com.simpson.kafka2cep.util.XmlReader;
-import com.simpson.kafka2cep.model.aliceKafkaTopicInfo;
  
 public class EPLRunner
 {
@@ -24,7 +22,7 @@ public class EPLRunner
     static final private String mTag4LocaleJAPAN  = "Locale.JAPAN";
     static final private String mTag4LocaleCHINA  = "Locale.CHINA";
  
-    static public HashMap<String, aliceEqlObject > mMap4Eql;
+    static public HashMap<String, EqlObject > mMap4Eql;
  
     static private String mEqlListFileName   = "";
  
@@ -52,7 +50,7 @@ public class EPLRunner
         try
         {
             mActClass = Class.forName( mClassName );
-            mEventItemNumber = ((aliceEvent)mActClass.newInstance()).length();
+            mEventItemNumber = ((CepEvent)mActClass.newInstance()).length();
         }
         catch( Exception e)
         {
@@ -64,7 +62,7 @@ public class EPLRunner
     {
         boolean     sRet       = false;
         EPStatement sStatement = null;
-        aliceEqlObject sObject = (aliceEqlObject)mMap4Eql.get( aID );
+        EqlObject sObject = (EqlObject)mMap4Eql.get( aID );
  
         if( sObject != null )
         {
@@ -126,7 +124,7 @@ public class EPLRunner
         String   sMain = "";
         String []sKeys = null;
  
-        aliceCepTo     sCcpCepTo  = null;
+        CepOutTarget     sCcpCepTo  = null;
         EPStatement  sStatement = null;
  
         boolean      sRet        = false;
@@ -156,14 +154,14 @@ public class EPLRunner
             }
         }
  
-        aliceEqlObject sObject = mMap4Eql.get( aID );
+        EqlObject sObject = mMap4Eql.get( aID );
  
         if( sObject == null || sObject.getStmt() == null )
         {
             try
             {
                 int sEventItemNumber = 0;
-                sCcpCepTo = aliceCepTo.getInstance( aTo );
+                sCcpCepTo = CepOutTarget.getInstance( aTo );
                 if( sCcpCepTo == null )
                 {
                     throw new Exception("to is illegal.");
@@ -173,8 +171,8 @@ public class EPLRunner
  
                 sStatement = mEpService.getEPAdministrator().createEPL( sEql );
  
-                aliceEventListener sListener
-                           = new aliceEventListener( sCcpCepTo,
+                CepEventListener sListener
+                           = new CepEventListener( sCcpCepTo,
                                                    sKeys,
                                                    mPrintDate,
                                                    mLocale,
@@ -184,7 +182,7 @@ public class EPLRunner
  
                 if( sObject == null )
                 {
-                    sObject = new aliceEqlObject( aID,
+                    sObject = new EqlObject( aID,
                                                 aMain,
                                                 aFrom,
                                                 aWhere,
@@ -246,7 +244,7 @@ public class EPLRunner
                        EPServiceProvider       aServiceProvider,
                        boolean                 aPrintDate,
                        String                  aLocale,
-                       HashMap<String, aliceKafkaTopicInfo> aTopic )
+                       HashMap<String, KafkaTopicInfo> aTopic )
     {
         boolean sDebug   = false;
         mEpService       = aServiceProvider;
@@ -259,11 +257,11 @@ public class EPLRunner
  
         try
         {
-            for( Map.Entry<String, aliceKafkaTopicInfo > sEntry:
+            for( Map.Entry<String, KafkaTopicInfo > sEntry:
                                      aTopic.entrySet() )
             {
                 String sTopic                = sEntry.getKey();
-                aliceKafkaTopicInfo sTopicInfo = sEntry.getValue();
+                KafkaTopicInfo sTopicInfo = sEntry.getValue();
                 EPLRunner sRunInfo = new EPLRunner(
                                                 sTopic,
                                                 sTopicInfo.mClassName,
@@ -297,9 +295,9 @@ public class EPLRunner
                 System.out.println("aEqlList = " + aEqlListFile );
             }
  
-            for( Map.Entry<String, aliceEqlObject> sEntry : mMap4Eql.entrySet() )
+            for( Map.Entry<String, EqlObject> sEntry : mMap4Eql.entrySet() )
             {
-                aliceEqlObject sEQL = sEntry.getValue();
+                EqlObject sEQL = sEntry.getValue();
                 if( runEPL( String.valueOf(sEQL.getID()),
                             sEQL.getMain(),
                             sEQL.getFrom(),
