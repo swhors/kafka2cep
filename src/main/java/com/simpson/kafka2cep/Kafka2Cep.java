@@ -6,7 +6,6 @@ package com.simpson.kafka2cep;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.espertech.esper.client.Configuration;
@@ -17,6 +16,8 @@ import com.simpson.kafka2cep.config.Config;
 import com.simpson.kafka2cep.config.KafkaConfig;
 import com.simpson.kafka2cep.http.SimpleHttpServer;
 import com.simpson.kafka2cep.kafka.ConsumerThreadPool;
+
+import com.simpson.kafka2cep.cep.event.CdrEvent;
 
 public class Kafka2Cep implements KafkaConfig
 {
@@ -176,17 +177,16 @@ public class Kafka2Cep implements KafkaConfig
          **********************************/
         System.out.println( "[Step " + sStepCnt++ +"] " +
                             "Start CEP Engine.\n");
-
+        
         Configuration sConfiguration = new Configuration();
         sConfiguration.addEventTypeAutoName(
-                   Config.getEqlClsID() );
-        //sConfiguration.addEventTypeAlias(
-        //          "ccpCdrEvent",
-        //          aliceCdrEvent.class );
+                   Config.getEqlClsID());
+        sConfiguration.addEventType("CdrEvent", CdrEvent.class);
 
         EPServiceProvider sEpService =
              EPServiceProviderManager.getDefaultProvider(
                                             sConfiguration );
+        		
         /**********************************
          * Regist EPL Lists from File.    *
          **********************************/

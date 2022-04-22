@@ -44,15 +44,32 @@
 	</dependencies>
 
 	<build>
+	    <resources>
+            <resource>
+                <directory>${project.build.directory}/dependency/</directory>
+                <includes>
+                    <include>*.jar</include>
+                </includes>
+                <targetPath>lib/</targetPath>
+            </resource>
+        </resources>
 		<pluginManagement>
 			<!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
+					<executions>
+					    <execution>
+					        <phase>package</phase>
+					        <goals>
+					            <goal>single</goal>
+					        </goals>
+					    </execution>
+					</executions>
 					<configuration>
 						<archive>
 							<manifest>
-								<mainClass>com.simpson.kafka2cep.CepRunner</mainClass>
+								<mainClass>com.simpson.kafka2cep.Kafka2Cep</mainClass>
 							</manifest>
 						</archive>
 						<descriptorRefs>
@@ -93,6 +110,8 @@
 				        <archive>
 				            <manifest>
 				                <mainClass>com.simpson.kafka2cep.Kafka2Cep</mainClass>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib/</classpathPrefix>
 				            </manifest>
 				        </archive>
 				    </configuration>
