@@ -5,7 +5,7 @@
 
 	<groupId>com.simpson.kafka2cep</groupId>
 	<artifactId>kafka2cep</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.1</version>
 
 	<name>kafka2cep</name>
 	<!-- FIXME change it to the project's website -->
@@ -13,8 +13,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -92,7 +92,7 @@
 				    <configuration>
 				        <archive>
 				            <manifest>
-				                <mainClass>com.simpson.kafka2cep.CepRunner</mainClass>
+				                <mainClass>com.simpson.kafka2cep.Kafka2Cep</mainClass>
 				            </manifest>
 				        </archive>
 				    </configuration>
